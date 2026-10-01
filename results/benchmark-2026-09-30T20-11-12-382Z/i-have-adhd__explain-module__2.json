@@ -1,0 +1,15 @@
+{
+  "setup": "i-have-adhd",
+  "promptId": "explain-module",
+  "promptKind": "question",
+  "repetition": 2,
+  "model": "claude-opus-5-5",
+  "reply": "It's a **sliding-window rate limiter**: each key (user ID, IP, etc.) gets at most `limit` calls in any rolling `windowMilliseconds` period.\n\n**How `tryAcquire(key)` works** (`src/rate-limiter.ts:11`):\n\n1. Drops that key's timestamps older than `now - windowMilliseconds`.\n2. If `limit` or more remain, it returns `false` (blocked) and records nothing.\n3. Otherwise it records `now` and returns `true` (allowed).\n\n**Example:** `new RateLimiter(5, 60_000)` allows 5 calls per key per minute. The 6th call inside that minute returns `false`. Calls are allowed again as the oldest ones pass the 60-second mark.\n\n**Details:**\n- `now` can be passed in, so tests can control the clock.\n- Blocked calls don't use up capacity.\n- Each key is limited separately.\n\nOne problem: keys are never removed from the map. A key that is never called again keeps its entry for good, so memory grows with the number of unique keys (for example, one per IP). Want me to add cleanup?",
+  "outputTokens": 538,
+  "costUsd": 0.157383,
+  "activationCostUsd": 0.0660646,
+  "durationMilliseconds": 7331,
+  "turns": 2,
+  "isError": false,
+  "checkPassed": null
+}

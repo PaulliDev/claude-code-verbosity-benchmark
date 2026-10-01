@@ -1,0 +1,15 @@
+{
+  "setup": "concise",
+  "promptId": "where-defined",
+  "promptKind": "lookup",
+  "repetition": 1,
+  "model": "claude-opus-5-5",
+  "reply": "The tax rate is defined in `src/money.ts:1` as `export const TAX_RATE = 0.21;`, which is 21%. It's used on line 5 of the same file to add tax to the net amount.",
+  "outputTokens": 150,
+  "costUsd": 0.1006398,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 3067,
+  "turns": 2,
+  "isError": false,
+  "checkPassed": null
+}

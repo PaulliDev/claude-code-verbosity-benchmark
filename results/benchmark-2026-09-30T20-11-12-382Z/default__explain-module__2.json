@@ -1,0 +1,15 @@
+{
+  "setup": "default",
+  "promptId": "explain-module",
+  "promptKind": "question",
+  "repetition": 2,
+  "model": "claude-opus-5-5",
+  "reply": "`src/rate-limiter.ts` is a **sliding-window rate limiter** that tracks limits separately for each key.\n\n**How it works:**\n- You create it with `new RateLimiter(limit, windowMilliseconds)`. For example, `new RateLimiter(5, 60_000)` allows 5 actions per key in any rolling 60-second period.\n- It stores a list of timestamps for each key (a user ID or IP address, for example) in a `Map`.\n- `tryAcquire(key, now?)`:\n  1. Drops any timestamps for that key that are older than `now - windowMilliseconds`.\n  2. If `limit` or more timestamps are still inside the window, it saves the trimmed list and returns `false`, meaning the request is rejected.\n  3. Otherwise it records `now` and returns `true`, meaning the request is allowed.\n- `now` defaults to `Date.now()`. You can pass your own value, which makes it easy to test.\n\n**Things to be aware of:**\n- **Memory grows with the number of keys.** Keys are never removed from the map. A key's list only gets trimmed when that key is used again, so keys that stop being used keep their old timestamps forever. If you have many unique keys (like IPs), memory will keep growing.\n- **It only works within one process.** State is kept in memory, so it isn't shared across multiple instances and is lost on restart.\n- **Rejected calls don't count toward the limit.** Only successful acquires are recorded, so repeated rejected attempts don't push the reset time further out.\n- **A timestamp stops counting exactly when the window ends.** Timestamps equal to `windowStart` count as expired, because the check is a strict `>`.",
+  "outputTokens": 719,
+  "costUsd": 0.1101966,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 10821,
+  "turns": 2,
+  "isError": false,
+  "checkPassed": null
+}

@@ -1,0 +1,15 @@
+{
+  "setup": "concise",
+  "promptId": "review-file",
+  "promptKind": "review",
+  "repetition": 3,
+  "model": "claude-opus-5-5",
+  "reply": "The sliding-window logic is correct: rejected calls aren't counted and the window boundary is handled consistently. There are two real problems and one edge case.\n\n1. **Memory grows without bound (lines 13–23).** Keys are never removed from the map. Every distinct key, such as each client IP or user ID, stays in `timestampsByKey` forever. Line 18 even writes back an empty array for a key that has gone idle. On a long-running server with high-cardinality keys, this steadily leaks memory. Fix: call `delete(key)` when `recent` is empty before returning, and periodically sweep idle keys (for example, on an interval or every N calls).\n\n2. **No validation of constructor inputs (lines 6–9).** If `limit` is `NaN`, `recent.length >= NaN` is always false, so every request is allowed and the limiter silently does nothing. That can happen with `Number(process.env.X)` when the variable is unset. A negative `limit` or `windowMilliseconds` gives similarly meaningless behavior. Fix: throw unless both are finite numbers greater than 0 (and `limit` is an integer).\n\n3. **Out-of-order `now` values.** If a caller passes a `now` earlier than timestamps already stored (clock skew, or out-of-order values in tests), those future timestamps stay in the window longer than `windowMilliseconds`. That's minor, but worth knowing because `now` can be injected.",
+  "outputTokens": 806,
+  "costUsd": 0.11656159999999999,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 9852,
+  "turns": 2,
+  "isError": false,
+  "checkPassed": null
+}

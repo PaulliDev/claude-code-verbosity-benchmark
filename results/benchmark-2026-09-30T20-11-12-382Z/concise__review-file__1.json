@@ -1,0 +1,15 @@
+{
+  "setup": "concise",
+  "promptId": "review-file",
+  "promptKind": "review",
+  "repetition": 1,
+  "model": "claude-opus-5-5",
+  "reply": "The sliding-window logic in `src/rate-limiter.ts` works: the boundary check is right and each key's array never holds more than `limit` entries. I found one real bug and two smaller issues.\n\n1. **Memory leak from keys that are never removed** (`rate-limiter.ts:4`, `:18`, `:23`). An entry is only rewritten when the same key is used again, and it is never deleted. If keys are something like client IPs or user IDs, every key ever seen stays in the map for the life of the process. Fix: delete the key when `recent` comes back empty, and run a periodic sweep (or an LRU/TTL map) to drop keys that are never touched again.\n\n2. **Bad constructor arguments are accepted without checks** (`:6-9`).\n   - `limit = NaN` makes `recent.length >= NaN` always false, so every request is allowed.\n   - `limit = 2.5` effectively allows 3 requests.\n   - `limit <= 0` rejects every request.\n   - A window of zero or less means nothing is ever counted, so it never limits.\n\n   Fix: require `limit` to be a positive integer and `windowMilliseconds` to be a positive finite number, and throw otherwise.\n\n3. **Clock going backwards** (`:11`). `Date.now()` is wall-clock time. If the system clock is set back, timestamps recorded before the change look like they're in the future. They stay inside the window and keep a key blocked for longer than the window. Fix: default to `performance.now()` (a monotonic clock), or clamp timestamps.\n\nMinor: the call allocates a new array on every request through `filter`. That's fine at small limits. For hot paths, a ring buffer or dropping expired entries from the front of a sorted array would avoid it.",
+  "outputTokens": 996,
+  "costUsd": 0.1203616,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 12909,
+  "turns": 2,
+  "isError": false,
+  "checkPassed": null
+}

@@ -1,0 +1,15 @@
+{
+  "setup": "concise",
+  "promptId": "explain-module",
+  "promptKind": "question",
+  "repetition": 2,
+  "model": "claude-opus-5-5",
+  "reply": "It's a sliding-window rate limiter that tracks each key separately. `tryAcquire(key)` returns `true` and records the call if the key has made fewer than `limit` calls in the last `windowMilliseconds`. Otherwise it returns `false` and doesn't record the call. Each call also drops that key's timestamps that are outside the window.\n\nEntries for a key are never removed from the map. With many unique keys (for example, one per IP), memory keeps growing.",
+  "outputTokens": 313,
+  "costUsd": 0.1067014,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 5261,
+  "turns": 2,
+  "isError": false,
+  "checkPassed": null
+}

@@ -1,0 +1,15 @@
+{
+  "setup": "concise",
+  "promptId": "explain-module",
+  "promptKind": "question",
+  "repetition": 3,
+  "model": "claude-opus-5-5",
+  "reply": "It's a sliding-window rate limiter keyed by string, such as a user ID or IP address. `tryAcquire(key)` allows at most `limit` calls per key in any rolling `windowMilliseconds` period.\n\nEach call drops the key's timestamps that are older than the window. If `limit` or more remain, it returns `false`. Otherwise it records the current time and returns `true`. You can pass `now` to make it easy to test.\n\nA key's timestamps are only cleaned up when that key is used again, and keys are never removed from the map. So if you have many one-off keys, such as IP addresses, memory will keep growing.",
+  "outputTokens": 374,
+  "costUsd": 0.10750880000000002,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 6404,
+  "turns": 2,
+  "isError": false,
+  "checkPassed": null
+}

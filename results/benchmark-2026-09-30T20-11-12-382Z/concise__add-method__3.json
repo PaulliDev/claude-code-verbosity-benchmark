@@ -1,0 +1,15 @@
+{
+  "setup": "concise",
+  "promptId": "add-method",
+  "promptKind": "task",
+  "repetition": 3,
+  "model": "claude-opus-5-5",
+  "reply": "I added `removeItem(sku)` to `Cart` in `src/cart.ts:17`. It removes every line item with that SKU, because `addItem` doesn't merge entries and a SKU can appear more than once. If the SKU isn't in the cart, it does nothing. I haven't run or tested it.",
+  "outputTokens": 605,
+  "costUsd": 0.1268406,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 8323,
+  "turns": 4,
+  "isError": false,
+  "checkPassed": true
+}

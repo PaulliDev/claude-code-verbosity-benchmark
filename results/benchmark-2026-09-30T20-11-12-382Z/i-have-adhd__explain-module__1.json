@@ -1,0 +1,15 @@
+{
+  "setup": "i-have-adhd",
+  "promptId": "explain-module",
+  "promptKind": "question",
+  "repetition": 1,
+  "model": "claude-opus-5-5",
+  "reply": "`src/rate-limiter.ts` caps how many actions each key (a user ID or IP address, for example) can make within a rolling time window. The algorithm is called a sliding-window log.\n\n**How it works:**\n\n1. `new RateLimiter(limit, windowMilliseconds)` sets the rule. For example, `new RateLimiter(5, 60_000)` means 5 calls per 60 seconds.\n2. `tryAcquire(key)` keeps only that key's timestamps from the last `windowMilliseconds` and drops the rest (lines 12–15).\n3. If `limit` or more timestamps are left, it returns `false` (blocked) and doesn't record the attempt (lines 17–19).\n4. Otherwise it records `now` and returns `true` (allowed) (lines 22–25).\n\n**Example:** with a limit of 5 per minute, the 6th call inside any 60-second span returns `false`. Once the oldest call is more than 60 seconds old, calls are allowed again.\n\n`now` is a parameter so tests can pass a fixed time instead of the real clock.\n\nSeparately, there's a memory leak: a key's timestamps are only cleaned up when that same key calls again, and keys are never removed from the map. With many one-time keys (like IP addresses), memory keeps growing. Want me to fix that next? It would take about 10 minutes.",
+  "outputTokens": 594,
+  "costUsd": 0.134457,
+  "activationCostUsd": 0.06654059999999999,
+  "durationMilliseconds": 7830,
+  "turns": 2,
+  "isError": false,
+  "checkPassed": null
+}

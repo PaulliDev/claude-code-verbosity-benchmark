@@ -1,0 +1,15 @@
+{
+  "setup": "i-have-adhd",
+  "promptId": "safe-twice",
+  "promptKind": "yes-no",
+  "repetition": 2,
+  "model": "claude-opus-5-5",
+  "reply": "No. The discounts add together, so calling `applyDiscount(10)` twice gives 20% off, not 10%.\n\n**Cause:** `src/cart.ts:18` uses `+=`:\n```ts\nthis.discountPercent += percent;\n```\n\n**What goes wrong:**\n- `applyDiscount(10)` twice → 20% off\n- `applyDiscount(60)` twice → 120% off, so `netTotal()` goes **negative** (a $10 cart comes out at -$2)\n- Nothing validates `percent`, so a single call with `150` or `-20` also gets through\n- No test covers a second call. The only discount test, `tests/cart.test.ts:14`, calls it once.\n\n**Fix options (recommended first):**\n1. **Replace:** change `+=` to `=` so the last call wins. This is a one-line fix, about 2 minutes.\n2. **Stack but cap:** keep `+=` and clamp the total to 0–100. Use this if discounts are meant to add up.\n\nBoth options should also reject values outside 0–100, plus get a test for calling it twice. That's about 10 minutes in total.\n\n**Next:** reply \"1\" or \"2\" and I'll make the change and add the test.",
+  "outputTokens": 823,
+  "costUsd": 0.1509672,
+  "activationCostUsd": 0.1091886,
+  "durationMilliseconds": 10302,
+  "turns": 4,
+  "isError": false,
+  "checkPassed": null
+}

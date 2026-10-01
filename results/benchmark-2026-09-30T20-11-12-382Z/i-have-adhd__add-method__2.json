@@ -1,0 +1,15 @@
+{
+  "setup": "i-have-adhd",
+  "promptId": "add-method",
+  "promptKind": "task",
+  "repetition": 2,
+  "model": "claude-opus-5-5",
+  "reply": "I added `Cart.removeItem(sku)` and all 4 cart tests pass, including the 2 new ones.\n\n- **What it does:** removes every line with that SKU. `addItem` doesn't merge duplicates, so the same SKU can appear on more than one line. An unknown SKU does nothing.\n- **Code:** `src/cart.ts:17`\n- **Tests:** `tests/cart.test.ts:23`. One checks that repeated lines are all removed, one checks that an unknown SKU is ignored.\n\n`npm test` still shows 1 failure. It's in `tests/money.test.ts:5`, not the cart code: expected `24.19`, got `24.1879`. `addTax` in `src/money.ts` doesn't round to cents. My change didn't touch that file.\n\nNext: want me to fix the rounding in `addTax`? It's about 2 minutes.",
+  "outputTokens": 1988,
+  "costUsd": 0.22325320000000004,
+  "activationCostUsd": 0.0973006,
+  "durationMilliseconds": 22668,
+  "turns": 11,
+  "isError": false,
+  "checkPassed": true
+}

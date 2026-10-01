@@ -1,0 +1,15 @@
+{
+  "setup": "default",
+  "promptId": "review-file",
+  "promptKind": "review",
+  "repetition": 1,
+  "model": "claude-opus-5-5",
+  "reply": "The sliding-window logic is correct: it counts requests in the last `windowMilliseconds`, allows a request when the count is below `limit`, and doesn't count rejected requests. The real problem is memory, plus some missing input checks.\n\n**1. Keys are never removed, so memory grows without limit (`src/rate-limiter.ts:13-23`).**\nOld timestamps are only cleared out when the same key is used again, and the map entry itself is never deleted. If keys are things like IP addresses or user IDs, every key ever seen keeps an array of up to `limit` numbers forever. A client that sends requests with many different keys can make this grow endlessly.\n\nFix: delete the entry when nothing recent is left, and clean up idle keys from time to time:\n\n```ts\nif (recent.length === 0) this.timestampsByKey.delete(key); // before the allow path re-adds it\n```\n\nTo clean up keys that are never called again, add a periodic sweep (for example, every N calls or on a timer) that deletes any key whose newest timestamp is older than `windowStart`. Keys that are never called again are the main source of the leak.\n\n**2. Bad constructor arguments break the limiter without any error (`src/rate-limiter.ts:6-9`).**\n- `limit` is `NaN`: `recent.length >= NaN` is always `false`, so every request is allowed.\n- `windowMilliseconds` is 0 or negative: `windowStart >= now`, so every stored timestamp has already expired by the next call, and every request is allowed.\n- `limit` is 0 or negative: every request is denied.\n- `limit` is fractional (e.g. 2.5): it behaves like `Math.ceil(limit)`.\n\nFix: check in the constructor that `limit` is a positive integer and `windowMilliseconds` is a positive finite number, and throw otherwise.\n\n**3. Clock jumps (minor).**\n`Date.now()` is wall-clock time, so NTP or manual clock changes can move it. If the clock goes backwards, the stored timestamps count as recent for longer than the window, and the key stays blocked longer than it should. If that matters, use a monotonic clock such as `performance.now()` as the default.\n\n**4. Performance (minor, not a correctness bug).**\nEvery call filters and copies the whole array, so each call costs O(limit). That's fine for small limits. For large ones, a ring buffer or a counter-based approximation would be cheaper.\n\nEverything else checks out. The window boundary (`timestamp > windowStart`, so a request exactly `windowMilliseconds` old has expired) is a reasonable choice. Not recording rejected requests is also correct, since otherwise a client that keeps retrying would never get unblocked.",
+  "outputTokens": 1447,
+  "costUsd": 0.1271108,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 16436,
+  "turns": 2,
+  "isError": false,
+  "checkPassed": null
+}

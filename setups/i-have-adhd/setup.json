@@ -1,0 +1,10 @@
+{
+  "description": "The i-have-adhd skill (MIT, github.com/ayghri/i-have-adhd), switched on with /i-have-adhd.",
+  "activationPrompt": "/i-have-adhd",
+  "downloads": [
+    {
+      "url": "https://raw.githubusercontent.com/ayghri/i-have-adhd/839872f9d1cd634fed642b4589ce7226199cc15f/skills/i-have-adhd/SKILL.md",
+      "destination": ".claude/skills/i-have-adhd/SKILL.md"
+    }
+  ]
+}

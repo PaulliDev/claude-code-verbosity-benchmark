@@ -1,0 +1,15 @@
+{
+  "setup": "default",
+  "promptId": "fix-failing",
+  "promptKind": "task",
+  "repetition": 3,
+  "model": "claude-opus-5-5",
+  "reply": "I fixed the failing test, \"adds 21% tax, rounded to cents\". All 4 tests pass now.\n\nThe problem was in `addTax` in `src/money.ts:5`. Its comment says it rounds to cents, but it didn't round at all, so `addTax(19.99)` returned `24.1879` instead of `24.19`. The fix rounds the result to two decimal places:\n\n```ts\nreturn Math.round(netAmount * (1 + TAX_RATE) * 100) / 100;\n```\n\nThis works for normal amounts. But ordinary decimal numbers can't store some values exactly, so a few amounts ending in a half cent may round down instead of up. If this is real money code, it would be safer to do the maths in whole cents.",
+  "outputTokens": 1097,
+  "costUsd": 0.1470322,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 15393,
+  "turns": 6,
+  "isError": false,
+  "checkPassed": true
+}

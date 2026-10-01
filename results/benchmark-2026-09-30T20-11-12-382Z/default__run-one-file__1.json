@@ -1,0 +1,15 @@
+{
+  "setup": "default",
+  "promptId": "run-one-file",
+  "promptKind": "lookup",
+  "repetition": 1,
+  "model": "claude-opus-5-5",
+  "reply": "Pass the cart test file straight to Node's test runner:\n\n```sh\nnode --test tests/cart.test.ts\n```\n\nI ran it and both cart tests passed.\n\nDon't use `npm test -- tests/cart.test.ts` for this. The `test` script already includes `\"tests/*.test.ts\"`, so npm would add your file to that pattern and still run every test file, including `money.test.ts`.\n\nTo run a single test inside the file by name, add `--test-name-pattern`:\n\n```sh\nnode --test --test-name-pattern=\"discount\" tests/cart.test.ts\n```",
+  "outputTokens": 688,
+  "costUsd": 0.1234342,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 10244,
+  "turns": 4,
+  "isError": false,
+  "checkPassed": null
+}

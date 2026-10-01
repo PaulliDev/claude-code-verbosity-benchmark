@@ -1,0 +1,15 @@
+{
+  "setup": "concise",
+  "promptId": "fix-failing",
+  "promptKind": "task",
+  "repetition": 2,
+  "model": "claude-opus-5-5",
+  "reply": "The failing test passes now, and so do the other three (4/4).\n\nThe bug was that `addTax` in `src/money.ts:5` didn't round to cents, even though its comment says it should. So 19.99 with 21% tax came out as 24.1879 instead of 24.19. It now rounds with `Math.round(x * 100) / 100`.",
+  "outputTokens": 1023,
+  "costUsd": 0.15266180000000001,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 13377,
+  "turns": 6,
+  "isError": false,
+  "checkPassed": true
+}

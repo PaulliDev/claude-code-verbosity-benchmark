@@ -1,0 +1,15 @@
+{
+  "setup": "concise",
+  "promptId": "run-one-file",
+  "promptKind": "lookup",
+  "repetition": 3,
+  "model": "claude-opus-5-5",
+  "reply": "Pass the cart test file straight to Node's test runner:\n\n```sh\nnode --test tests/cart.test.ts\n```\n\nI ran it and both tests passed. The `npm test` script runs every file in `tests/`, so the command above is how to run just this one.",
+  "outputTokens": 350,
+  "costUsd": 0.1148038,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 6593,
+  "turns": 3,
+  "isError": false,
+  "checkPassed": null
+}

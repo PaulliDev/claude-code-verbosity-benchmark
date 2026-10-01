@@ -1,0 +1,15 @@
+{
+  "setup": "claude-md",
+  "promptId": "review-file",
+  "promptKind": "review",
+  "repetition": 2,
+  "model": "claude-opus-5-5",
+  "reply": "The sliding-window logic is correct. The one real bug is that memory grows without bound.\n\n1. **Memory leak (`src/rate-limiter.ts:4`, `:18`, `:23`).** An entry in `timestampsByKey` is only pruned when that same key is called again, and nothing ever removes a key. Keys that stop sending requests keep their timestamps forever. With many distinct keys (per-IP or per-user limiting), the map grows without limit. Line 18 can also store an empty array for a key. Fixes:\n   - Delete the key when `recent` is empty.\n   - Add a periodic sweep, or a `cleanup(now)` method, that removes keys whose newest timestamp is older than `windowStart`.\n\n2. **No constructor validation (`:6-9`).** Nothing checks the arguments, so bad values fail quietly:\n   - `limit <= 0` or `NaN` rejects every request.\n   - A negative or `NaN` `windowMilliseconds` makes `windowStart` greater than `now` or `NaN`. Every stored timestamp then gets filtered out, so there is no limit at all.\n\n   Require `limit` to be a positive integer and `windowMilliseconds` to be a positive finite number.\n\n3. **Minor: non-monotonic `now`.** If a caller passes a `now` earlier than timestamps already stored (for example, clock skew or tests replaying events), those future-dated entries count against the limit until real time passes them. This only matters if callers can supply `now` out of order.",
+  "outputTokens": 761,
+  "costUsd": 0.1152242,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 9547,
+  "turns": 2,
+  "isError": false,
+  "checkPassed": null
+}

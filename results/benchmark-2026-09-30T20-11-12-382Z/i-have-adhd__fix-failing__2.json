@@ -1,0 +1,15 @@
+{
+  "setup": "i-have-adhd",
+  "promptId": "fix-failing",
+  "promptKind": "task",
+  "repetition": 2,
+  "model": "claude-opus-5-5",
+  "reply": "The failing test is fixed and all 4 tests pass. Check it yourself with `npm test`.\n\n- **What failed:** in `tests/money.test.ts:6`, `addTax(19.99)` returned `24.1879` but the test expected `24.19`.\n- **Cause:** the comment on `addTax` says it rounds the result to cents, but the code never rounded it.\n- **Fix:** in `src/money.ts:5`, the result is now rounded to cents:\n  ```ts\n  return Math.round(netAmount * (1 + TAX_RATE) * 100) / 100;\n  ```\n\nSeparately: in `src/cart.ts:18`, `applyDiscount` adds each new discount to the previous one (`+=`). Calling it twice with 10 gives 20% off instead of replacing the discount, which may not be what you want. Want me to change it?",
+  "outputTokens": 1850,
+  "costUsd": 0.2742076,
+  "activationCostUsd": 0.1083446,
+  "durationMilliseconds": 19675,
+  "turns": 12,
+  "isError": false,
+  "checkPassed": true
+}

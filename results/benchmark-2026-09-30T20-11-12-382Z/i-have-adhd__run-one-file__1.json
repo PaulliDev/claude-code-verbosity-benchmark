@@ -1,0 +1,15 @@
+{
+  "setup": "i-have-adhd",
+  "promptId": "run-one-file",
+  "promptKind": "lookup",
+  "repetition": 1,
+  "model": "claude-opus-5-5",
+  "reply": "Run this from the project root:\n\n```\nnode --test tests/cart.test.ts\n```\n\nI ran it: both cart tests pass, in about 75 ms.\n\nDon't use `npm test -- tests/cart.test.ts`. The `test` script already includes the `tests/*.test.ts` glob, so npm adds your file to that list and runs every test anyway.\n\nTo run a single test by name, add a filter: `node --test --test-name-pattern=\"discount\" tests/cart.test.ts`",
+  "outputTokens": 554,
+  "costUsd": 0.1653346,
+  "activationCostUsd": 0.0660246,
+  "durationMilliseconds": 8150,
+  "turns": 3,
+  "isError": false,
+  "checkPassed": null
+}

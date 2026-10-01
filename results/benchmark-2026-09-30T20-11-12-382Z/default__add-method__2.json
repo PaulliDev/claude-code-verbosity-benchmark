@@ -1,0 +1,15 @@
+{
+  "setup": "default",
+  "promptId": "add-method",
+  "promptKind": "task",
+  "repetition": 2,
+  "model": "claude-opus-5-5",
+  "reply": "I added `removeItem(sku)` to `Cart` in `src/cart.ts:17`. I haven't run or tested it.\n\nIt removes every entry with that SKU, not just the first one. `addItem` doesn't merge duplicates, so one SKU can be in the cart more than once. If the SKU isn't in the cart, the method does nothing.\n\nOne thing I noticed but didn't change: `applyDiscount` adds each new percent to the existing one (`+=`). Two calls with 10 give a 20% discount, and discounts over 100% would make totals negative. If you meant the discount to be replaced instead, that needs a separate fix.",
+  "outputTokens": 747,
+  "costUsd": 0.120023,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 9679,
+  "turns": 4,
+  "isError": false,
+  "checkPassed": true
+}

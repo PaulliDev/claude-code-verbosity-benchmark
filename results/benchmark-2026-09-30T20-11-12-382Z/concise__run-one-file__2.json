@@ -1,0 +1,15 @@
+{
+  "setup": "concise",
+  "promptId": "run-one-file",
+  "promptKind": "lookup",
+  "repetition": 2,
+  "model": "claude-opus-5-5",
+  "reply": "Run the file directly with Node:\n\n```sh\nnode --test tests/cart.test.ts\n```\n\nI ran it and both cart tests passed. Don't use `npm test -- tests/cart.test.ts`: the npm script already passes `tests/*.test.ts`, so the money tests would run too. To run one test by name, add `--test-name-pattern=\"<name>\"`.",
+  "outputTokens": 652,
+  "costUsd": 0.1277956,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 9846,
+  "turns": 4,
+  "isError": false,
+  "checkPassed": null
+}

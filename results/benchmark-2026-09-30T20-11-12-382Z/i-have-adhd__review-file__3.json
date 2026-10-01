@@ -1,0 +1,15 @@
+{
+  "setup": "i-have-adhd",
+  "promptId": "review-file",
+  "promptKind": "review",
+  "repetition": 3,
+  "model": "claude-opus-5-5",
+  "reply": "The core rate-limiting logic in `src/rate-limiter.ts` is correct. There's one real bug (memory never freed) and one input-validation gap. Fix #1 first; it takes about 10 minutes.\n\n## Findings, most important first\n\n**1. Memory leak: keys are never removed** (`src/rate-limiter.ts:23`)\n- Every new key adds an entry to `timestampsByKey`, and nothing ever deletes it.\n- Old timestamps are only cleaned up when that same key calls again.\n- What goes wrong: if you key by IP or user ID, a key that makes one request and never returns keeps its entry forever. Under heavy traffic or a scan, the map grows until the process runs out of memory.\n- Fix: add a cleanup method that runs on a timer:\n  ```ts\n  public prune(now: number = Date.now()): void {\n    const windowStart = now - this.windowMilliseconds;\n    for (const [key, timestamps] of this.timestampsByKey) {\n      if (timestamps[timestamps.length - 1] <= windowStart) {\n        this.timestampsByKey.delete(key);\n      }\n    }\n  }\n  ```\n  Checking only the last timestamp works because timestamps are pushed in time order.\n\n**2. Bad constructor arguments are accepted silently** (`src/rate-limiter.ts:6-9`)\n- If `limit` is `NaN`, `recent.length >= NaN` is always false, so every request is allowed.\n- If `windowMilliseconds` is negative, the filter drops every timestamp, so every request is allowed.\n- A `limit` of `2.5` behaves like 3.\n- Fix: throw at construction time:\n  ```ts\n  if (!Number.isInteger(limit) || limit < 0) throw new RangeError(\"limit must be a non-negative integer\");\n  if (!Number.isFinite(windowMilliseconds) || windowMilliseconds <= 0) throw new RangeError(\"windowMilliseconds must be positive\");\n  ```\n\n## Checked and fine\n- A timestamp exactly one window old expires (`>` on line 14). That's the correct behavior.\n- Rejected requests aren't recorded, so a client that keeps hitting the limit doesn't extend its own lockout.\n- `filter` costs at most `limit` steps per call, because the array never grows past `limit`.\n\nSeparately, if the system clock jumps backward, stored timestamps count as \"in the future\" and can lock a key out for longer than the window. It's minor. Want me to handle it after the fixes above?\n\nNext: paste the `prune` method into the class after line 26, then tell me whether you want it on a timer or called from `tryAcquire`.",
+  "outputTokens": 1463,
+  "costUsd": 0.154856,
+  "activationCostUsd": 0.11004459999999999,
+  "durationMilliseconds": 15522,
+  "turns": 2,
+  "isError": false,
+  "checkPassed": null
+}

@@ -1,0 +1,15 @@
+{
+  "setup": "i-have-adhd",
+  "promptId": "review-file",
+  "promptKind": "review",
+  "repetition": 1,
+  "model": "claude-opus-5-5",
+  "reply": "**One real bug: the `timestampsByKey` map is never cleaned up, so memory grows without limit.** The rest of the logic is correct.\n\n## Bug: memory leak (`src/rate-limiter.ts:4`, `:18`, `:23`)\n\n- **Cause:** Nothing ever deletes a key. Old timestamps are only dropped when the same key is used again. A key that's used once and never again stays in memory forever. Even a rejected call writes an entry back (line 18).\n- **When it hurts:** keys based on IP, user ID, or session. Every unique visitor adds an entry that never goes away. A scanner cycling through IPs can grow memory until the process crashes.\n- **Fix (about 10 minutes):**\n  1. In `tryAcquire`, if `recent` is empty after filtering, call `this.timestampsByKey.delete(key)` instead of `set`.\n  2. Add a `sweep(now = Date.now())` method that loops over the map and deletes keys whose newest timestamp is at or before `now - windowMilliseconds`.\n  3. Call `sweep` on a timer, e.g. `setInterval(() => limiter.sweep(), windowMilliseconds)`, or every N calls.\n\n## Minor: constructor accepts bad input (`src/rate-limiter.ts:6`)\n\n- `limit = NaN` makes `recent.length >= NaN` always false, so **every request is allowed**. This happens if the limit comes from an unset env var run through `Number(...)`.\n- `limit <= 0` blocks everything. A zero or negative `windowMilliseconds` makes the limiter meaningless.\n- **Fix (2 minutes):** throw if `!Number.isFinite(limit) || limit < 0 || !Number.isFinite(windowMilliseconds) || windowMilliseconds <= 0`.\n\n## Checked and fine\n\n- Each key's array holds at most `limit` entries, because rejected calls don't push a timestamp.\n- The window boundary (`>`) is consistent: a timestamp exactly `windowMilliseconds` old has expired.\n- No race conditions: `tryAcquire` is synchronous, so it can't be interrupted partway through.\n\nNext: say \"fix both\" and I'll apply the leak fix and the constructor check.",
+  "outputTokens": 1299,
+  "costUsd": 0.15039180000000002,
+  "activationCostUsd": 0.0670606,
+  "durationMilliseconds": 14314,
+  "turns": 2,
+  "isError": false,
+  "checkPassed": null
+}

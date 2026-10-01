@@ -1,0 +1,15 @@
+{
+  "setup": "default",
+  "promptId": "run-one-file",
+  "promptKind": "lookup",
+  "repetition": 2,
+  "model": "claude-opus-5-5",
+  "reply": "The cart tests are in `tests/cart.test.ts`. Pass that file to Node's test runner directly:\n\n```sh\nnode --test tests/cart.test.ts\n```\n\nDon't use `npm test -- tests/cart.test.ts` for this. The `test` script already includes the `tests/*.test.ts` glob, so npm would add your file to that list and every test would still run.\n\nThis works because Node 22.18+ (the version `package.json` requires) runs `.ts` files natively.\n\nTo run only some tests inside the cart file, filter by test name:\n\n```sh\nnode --test --test-name-pattern=\"total\" tests/cart.test.ts\n```",
+  "outputTokens": 483,
+  "costUsd": 0.1118286,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 7571,
+  "turns": 3,
+  "isError": false,
+  "checkPassed": null
+}

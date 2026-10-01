@@ -1,0 +1,15 @@
+{
+  "setup": "claude-md",
+  "promptId": "review-file",
+  "promptKind": "review",
+  "repetition": 3,
+  "model": "claude-opus-5-5",
+  "reply": "No correctness bugs in the limiting logic itself; the sliding-window check at `src/rate-limiter.ts:13-17` behaves correctly. There is one real problem and two minor ones:\n\n1. **Memory leak (real bug)** at `src/rate-limiter.ts:18` and `:23`: keys are never removed from `timestampsByKey`. A key that stops sending requests keeps its entry forever, even when every timestamp has expired and `recent` is `[]`. If keys are per-user or per-IP, the map grows without bound. Fix: delete the key when `recent` is empty, and add a periodic sweep (or an LRU) for keys that are never checked again.\n\n2. **No constructor validation** at `src/rate-limiter.ts:6-9`: `NaN`, negative or zero values are accepted silently. With `limit = NaN`, `recent.length >= NaN` is always false, so every request is allowed. With `windowMilliseconds <= 0`, nothing is ever limited.\n\n3. **Clock skew:** if a caller passes a `now` earlier than times already stored (for example, a clock that went backwards), those \"future\" timestamps count against the key for longer than the window. This is minor, but worth knowing because `now` can be injected.",
+  "outputTokens": 764,
+  "costUsd": 0.1153168,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 9984,
+  "turns": 2,
+  "isError": false,
+  "checkPassed": null
+}

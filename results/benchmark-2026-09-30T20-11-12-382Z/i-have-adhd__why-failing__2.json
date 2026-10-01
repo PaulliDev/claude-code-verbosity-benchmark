@@ -1,0 +1,15 @@
+{
+  "setup": "i-have-adhd",
+  "promptId": "why-failing",
+  "promptKind": "question",
+  "repetition": 2,
+  "model": "claude-opus-5-5",
+  "reply": "The fix is to round to cents in `addTax` at `src/money.ts:5`:\n\n```ts\nreturn Math.round(netAmount * (1 + TAX_RATE) * 100) / 100;\n```\n\n**Why it fails:** `addTax(19.99)` returns `24.1879`, but the test expects `24.19`. The comment says the result is \"rounded to cents\", but the code never rounds. The bug is in the code, not the test.\n\n**Current state:** `npm test` shows 3 of 4 tests passing. Only this one fails (`tests/money.test.ts:6`). I haven't changed any files.\n\n**Side effect:** `Cart.grossTotal()` calls `addTax`, so cart totals will also be rounded to cents after the fix. That's probably what you want for a checkout.\n\nNext: say \"apply it\" and I'll make the one-line edit and rerun `npm test`. That takes about 1 minute.",
+  "outputTokens": 880,
+  "costUsd": 0.19386520000000002,
+  "activationCostUsd": 0.0661006,
+  "durationMilliseconds": 11622,
+  "turns": 4,
+  "isError": false,
+  "checkPassed": null
+}

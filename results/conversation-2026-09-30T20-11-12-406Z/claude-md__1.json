@@ -1,0 +1,82 @@
+[
+  {
+    "setup": "claude-md",
+    "repetition": 1,
+    "turn": 1,
+    "prompt": "What does this project do?",
+    "reply": "It's a small TypeScript checkout module used as a benchmark test bed. It has a `Cart` with item totals, stackable percentage discounts and 21% tax (`src/cart.ts`), euro tax and formatting helpers (`src/money.ts`), and a per-key sliding-window `RateLimiter` (`src/rate-limiter.ts`). Tests use Node's built-in runner through `npm test`. I didn't run them, but `addTax` never rounds to cents despite its comment, so the `24.19` test in `tests/money.test.ts` should fail.",
+    "costUsd": 0.1245444
+  },
+  {
+    "setup": "claude-md",
+    "repetition": 1,
+    "turn": 2,
+    "prompt": "Why is the tax test failing?",
+    "reply": "`addTax` in `src/money.ts:4` returns `19.99 * 1.21` without rounding, so the test gets `24.1879` instead of the expected `24.19`. The fix is `return Math.round(netAmount * (1 + TAX_RATE) * 100) / 100;`, which makes the function match its \"rounded to cents\" comment.",
+    "costUsd": 0.1601848
+  },
+  {
+    "setup": "claude-md",
+    "repetition": 1,
+    "turn": 3,
+    "prompt": "Fix it.",
+    "reply": "I fixed it: `addTax` in `src/money.ts:5` now rounds to cents, and all 4 tests pass.",
+    "costUsd": 0.1886658
+  },
+  {
+    "setup": "claude-md",
+    "repetition": 1,
+    "turn": 4,
+    "prompt": "Is it safe to call applyDiscount twice on the same cart?",
+    "reply": "Not really. `applyDiscount` adds to `discountPercent` (`src/cart.ts:18`), so two 10% calls give 20% off instead of stacking to 19%. Nothing caps the total either, so 60% applied twice makes 120% and `netTotal()` goes negative. Negative percentages are also accepted, which raise the price.",
+    "costUsd": 0.198514
+  },
+  {
+    "setup": "claude-md",
+    "repetition": 1,
+    "turn": 5,
+    "prompt": "Make it safe to call more than once.",
+    "reply": "`applyDiscount` can now be called more than once safely, and all 6 tests pass. Repeated discounts compound, so two 50% discounts take off 75% and the net total can't go below zero (`src/cart.ts:18`). Anything outside 0–100 throws a `RangeError`. I added tests for both in `tests/cart.test.ts`.\n\nThis changes behavior: code that relied on discounts adding up (10% + 10% = 20%) will now get 19%.",
+    "costUsd": 0.28445299999999996
+  },
+  {
+    "setup": "claude-md",
+    "repetition": 1,
+    "turn": 6,
+    "prompt": "What does src/rate-limiter.ts do?",
+    "reply": "It's a sliding-window rate limiter that allows each key (such as a user ID) up to `limit` calls in any rolling `windowMilliseconds` period. `tryAcquire(key)` removes that key's timestamps older than the window, then returns `false` if the limit is already reached, or records the call and returns `true`. Keys are never evicted from the map, though, so memory grows with every distinct key it sees.",
+    "costUsd": 0.2958956
+  },
+  {
+    "setup": "claude-md",
+    "repetition": 1,
+    "turn": 7,
+    "prompt": "Any bugs in it?",
+    "reply": "There's no logic bug; I traced the window arithmetic, blocked calls and per-key isolation and they're all correct. There are two robustness problems:\n\n- **Memory leak:** a key's entry is never deleted, even after all its timestamps expire, so a long-running process with many distinct keys (IPs, user IDs) grows its map without limit (`src/rate-limiter.ts:4`).\n- **No input validation:** `limit <= 0` quietly blocks every call, and a `NaN` window lets every call through.\n\n`Date.now()` can also jump backwards if the system clock changes, which keeps a key blocked for longer than the window. There are no tests for this file.",
+    "costUsd": 0.3163414
+  },
+  {
+    "setup": "claude-md",
+    "repetition": 1,
+    "turn": 8,
+    "prompt": "Where is the tax rate defined?",
+    "reply": "It's `TAX_RATE = 0.21` at `src/money.ts:1`.",
+    "costUsd": 0.338539
+  },
+  {
+    "setup": "claude-md",
+    "repetition": 1,
+    "turn": 9,
+    "prompt": "Add a removeItem(sku) method to Cart.",
+    "reply": "I added `Cart.removeItem(sku)` in `src/cart.ts`, and all 7 tests pass, including a new one for it. It removes every line with that SKU, since `addItem` allows the same SKU more than once, and returns `true` if it removed anything.",
+    "costUsd": 0.38398299999999996
+  },
+  {
+    "setup": "claude-md",
+    "repetition": 1,
+    "turn": 10,
+    "prompt": "Do all the tests pass now?",
+    "reply": "Yes, all 7 pass, with 0 failing, as of the last `npm test` run just after I added `removeItem`. `src/rate-limiter.ts` still has no tests.",
+    "costUsd": 0.39679739999999997
+  }
+]

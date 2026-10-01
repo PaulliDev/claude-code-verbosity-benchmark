@@ -1,0 +1,15 @@
+{
+  "setup": "claude-md",
+  "promptId": "run-one-file",
+  "promptKind": "lookup",
+  "repetition": 3,
+  "model": "claude-opus-5-5",
+  "reply": "```sh\nnode --test tests/cart.test.ts\n```\n\nDon't use `npm test -- tests/cart.test.ts`. The script already passes the `tests/*.test.ts` glob, so npm would add your file to that list and still run every test.",
+  "outputTokens": 265,
+  "costUsd": 0.1011896,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 7179,
+  "turns": 2,
+  "isError": false,
+  "checkPassed": null
+}

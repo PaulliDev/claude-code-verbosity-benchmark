@@ -1,0 +1,15 @@
+{
+  "setup": "default",
+  "promptId": "why-failing",
+  "promptKind": "question",
+  "repetition": 2,
+  "model": "claude-opus-5-5",
+  "reply": "The test fails because `addTax` never rounds. Its comment says it returns the gross amount \"rounded to cents\", but the code only multiplies:\n\n```ts\n// src/money.ts:4\nexport function addTax(netAmount: number): number {\n  return netAmount * (1 + TAX_RATE);\n}\n```\n\nSo `addTax(19.99)` returns `19.99 × 1.21 = 24.1879`, and the test expects `24.19` (`tests/money.test.ts:6`). The other three tests pass.\n\nThe test is right and the code is wrong. The fix is to round to cents:\n\n```ts\nexport function addTax(netAmount: number): number {\n  return Math.round(netAmount * (1 + TAX_RATE) * 100) / 100;\n}\n```\n\nThis also affects `Cart.grossTotal()`, which calls `addTax`. Right now it can return totals with fractions of a cent. No test covers it, so the suite doesn't catch that.\n\nWant me to apply the fix?",
+  "outputTokens": 850,
+  "costUsd": 0.134377,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 11603,
+  "turns": 4,
+  "isError": false,
+  "checkPassed": null
+}

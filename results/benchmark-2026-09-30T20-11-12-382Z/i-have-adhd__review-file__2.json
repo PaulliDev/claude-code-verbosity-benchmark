@@ -1,0 +1,15 @@
+{
+  "setup": "i-have-adhd",
+  "promptId": "review-file",
+  "promptKind": "review",
+  "repetition": 2,
+  "model": "claude-opus-5-5",
+  "reply": "The counting logic is correct, but there are two real bugs: memory grows without limit, and bad constructor values silently turn the limiter off. I read the file but haven't run anything.\n\n**Bugs, most serious first:**\n\n1. **Memory leak (`rate-limiter.ts:4`, `:23`)**: keys are never removed from `timestampsByKey`. If you rate-limit by IP or user ID, every key ever seen stays in memory forever, even after it goes idle.\n   - Fix: delete the key when `recent` is empty, and run a periodic sweep (e.g. `setInterval`) that drops keys whose newest timestamp is older than the window.\n\n2. **Bad config turns the limiter off (`:6-9`)**: the constructor accepts any number.\n   - `limit = NaN`: `recent.length >= NaN` is always `false`, so every request is allowed.\n   - `windowMilliseconds = NaN`: `windowStart` becomes `NaN`, the filter drops every timestamp, so every request is allowed.\n   - `limit = 2.5`: 3 requests are allowed.\n   - `limit <= 0`: every request is blocked.\n   - Fix: throw unless `Number.isInteger(limit) && limit > 0` and `Number.isFinite(windowMilliseconds) && windowMilliseconds > 0`.\n\n3. **Clock jumps backward (`:11`)** (minor): `Date.now()` can move backward when the system clock is corrected. Timestamps then sit in the \"future\" and count for longer than the window, so a key is blocked for longer than it should be. For a strict limiter, use `performance.now()` or pass in a monotonic clock.\n\n**Correct as written:**\n- Rejected requests aren't recorded, so a client that keeps retrying can't lock itself out.\n- A timestamp exactly `windowMilliseconds` old counts as expired, which is consistent.\n\nAbout 15 minutes to fix #1 and #2, plus tests.\n\nNext: say \"fix 1 and 2\" and I'll make the edits and add tests.",
+  "outputTokens": 1243,
+  "costUsd": 0.21171099999999998,
+  "activationCostUsd": 0.1040846,
+  "durationMilliseconds": 15029,
+  "turns": 2,
+  "isError": false,
+  "checkPassed": null
+}

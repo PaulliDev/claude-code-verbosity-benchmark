@@ -1,0 +1,15 @@
+{
+  "setup": "default",
+  "promptId": "safe-twice",
+  "promptKind": "yes-no",
+  "repetition": 3,
+  "model": "claude-opus-5-5",
+  "reply": "No. The discounts stack. `applyDiscount` adds to the existing discount rather than replacing it (`src/cart.ts:18`):\n\n```ts\nthis.discountPercent += percent;\n```\n\nSo calling it twice gives a bigger discount each time:\n\n- `applyDiscount(10)` twice means 20% off, not 10%.\n- The discounts are added together, not applied one after another. Two 10% calls give 20% off, where applying them in turn would give 19%.\n- Nothing limits the total. `applyDiscount(60)` twice means 120% off, so `netTotal()` and `grossTotal()` come out **negative**.\n- A single call isn't checked either. A negative percent raises the price, and anything over 100 gives a negative total.\n\nThe tests in `tests/cart.test.ts` only call it once, so none of this is covered.\n\n**How to fix it depends on what you want:**\n\n- **One discount per cart, where a later call replaces the earlier one:** change `+=` to `=`. Calling it twice with the same value then does nothing extra.\n- **Discounts that are meant to stack:** keep adding them, but cap the total at 100, e.g. `Math.min(100, this.discountPercent + percent)`.\n\nEither way, reject a `percent` outside 0–100. I can make the change and add a test for calling it twice if you tell me which behavior you want.",
+  "outputTokens": 800,
+  "costUsd": 0.1211952,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 9983,
+  "turns": 4,
+  "isError": false,
+  "checkPassed": null
+}

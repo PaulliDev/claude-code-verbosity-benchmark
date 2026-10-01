@@ -1,0 +1,82 @@
+[
+  {
+    "setup": "i-have-adhd",
+    "repetition": 2,
+    "turn": 1,
+    "prompt": "What does this project do?",
+    "reply": "It's a small TypeScript checkout module (a shopping cart plus tax math) that the README says is a test bed for a benchmark. It has no dependencies and runs on Node 22.18+ using the built-in test runner.\n\n**What's in it:**\n\n1. **`src/cart.ts`**: a `Cart` class. You add items (sku, unit price, quantity) and apply percentage discounts, then get the net total (before tax) or gross total (after tax).\n2. **`src/money.ts`**: `addTax()` adds 21% tax, and `formatEuros()` turns a number into text like `€5.00`.\n3. **`src/rate-limiter.ts`**: a sliding-window rate limiter that allows N calls per key per time window. Nothing else in the project uses it.\n4. **`tests/`**: 4 tests: 2 for the cart and 2 for the money functions. The rate limiter has none.\n\n**Bugs I spotted by reading the code (I didn't run the tests):**\n\n1. **`addTax` never rounds** (`src/money.ts:5`). Its comment says it rounds to cents, but it doesn't. So the test `addTax(19.99) === 24.19` should fail, because the actual result is 24.1879.\n2. **Discounts add up** (`src/cart.ts:18`). Calling `applyDiscount` twice adds the two percentages together. Two 60% discounts would give a negative total.\n\nNext: run `npm test` to check bug 1 (about 5 seconds). Want me to fix both bugs? That's about 5 minutes.",
+    "costUsd": 0.18939879999999998
+  },
+  {
+    "setup": "i-have-adhd",
+    "repetition": 2,
+    "turn": 2,
+    "prompt": "Why is the tax test failing?",
+    "reply": "The test fails because `addTax` never rounds to cents. The fix is one line: change `src/money.ts:5` to\n\n```ts\nreturn Math.round(netAmount * (1 + TAX_RATE) * 100) / 100;\n```\n\n**What I saw when I ran `npm test`:** 3 tests passed and 1 failed.\n\n- **Failing test:** `tests/money.test.ts:6`, which expects `24.19` but gets `24.1879`.\n- **Cause:** `addTax` at `src/money.ts:5` returns `19.99 × 1.21` unrounded. The comment above it says it rounds to cents, but the code doesn't.\n- **The fix:** it multiplies by 100, rounds to a whole number of cents, and divides by 100 again. `24.1879` becomes `24.19`.\n\nWant me to apply it and rerun the tests? That takes about 1 minute.",
+    "costUsd": 0.22306759999999998
+  },
+  {
+    "setup": "i-have-adhd",
+    "repetition": 2,
+    "turn": 3,
+    "prompt": "Fix it.",
+    "reply": "The tax test now passes, and so does everything else: all 4 of 4 tests pass. `addTax` in `src/money.ts:5` now rounds to cents, so `addTax(19.99)` returns `24.19`.\n\nOne bug is still open: two discounts add their percentages together, so two 60% discounts give a negative total (`src/cart.ts:18`). No test covers this, so the passing suite doesn't catch it.\n\nNext: want me to fix the discount bug and add a test for it? That's about 5 minutes.",
+    "costUsd": 0.254565
+  },
+  {
+    "setup": "i-have-adhd",
+    "repetition": 2,
+    "turn": 4,
+    "prompt": "Is it safe to call applyDiscount twice on the same cart?",
+    "reply": "No, it isn't safe. The second call adds its percentage to the first, and nothing caps the total. Once the discounts add up past 100%, the cart total goes negative.\n\n**Why:** `src/cart.ts:18` does `this.discountPercent += percent`, and `netTotal()` then multiplies the subtotal by `1 - discountPercent / 100`.\n\n**Examples on a €100 cart:**\n\n| Calls | Stored discount | Net total |\n|---|---|---|\n| 10%, then 10% | 20% | €80 (you might expect €81 if discounts compound) |\n| 60%, then 60% | 120% | **−€20** |\n| 10%, then 10% again by mistake | 20% | €80, when only one discount was meant to apply |\n\nI worked these out by reading the code. The script to confirm them needed approval, so it didn't run.\n\n**What \"correct\" means depends on what you want. Pick one:**\n\n1. **Replace:** each call overwrites the previous discount. This is the simplest option and stops double-applying by accident.\n2. **Compound:** 10% then 10% gives €81.\n3. **Add, but cap at 100%:** keeps today's behavior and blocks negative totals.\n\nI recommend option 1, plus rejecting any percent below 0 or above 100.\n\nNext: reply 1, 2, or 3 and I'll make the fix and add a test. That's about 5 minutes.",
+    "costUsd": 0.28879099999999996
+  },
+  {
+    "setup": "i-have-adhd",
+    "repetition": 2,
+    "turn": 5,
+    "prompt": "Make it safe to call more than once.",
+    "reply": "You can now call `applyDiscount` as many times as you like. Each call replaces the previous discount, and the total can't go negative. All 6 of 6 tests pass, including 2 new ones.\n\n**What changed:**\n\n1. **`src/cart.ts:17`**: a new call replaces the old discount instead of adding to it. So 60% then 60% on €100 gives €40, not −€20.\n2. **Same function**: any value below 0, above 100, or not a real number throws a `RangeError`.\n3. **`tests/cart.test.ts`**: new tests cover calling it twice and passing out-of-range values.\n\nYou didn't choose between the three options, so I used option 1 (replace), which I'd recommended. This changes behavior: any caller that meant to stack discounts (10% + 10% = 20%) now gets only the last one.\n\nNext: if you want stacking instead, reply \"compound\" or \"add with cap\" and I'll switch it (about 5 minutes).",
+    "costUsd": 0.3420234
+  },
+  {
+    "setup": "i-have-adhd",
+    "repetition": 2,
+    "turn": 6,
+    "prompt": "What does src/rate-limiter.ts do?",
+    "reply": "It limits how often each key (a user ID or an IP address, say) can do something: at most `limit` times in any rolling window of `windowMilliseconds`. `new RateLimiter(5, 60_000)` allows 5 calls per key per minute.\n\n**How `tryAcquire(key)` works:**\n\n1. It takes the list of times this key was allowed through.\n2. It drops any time older than the window. The window slides with each call; it doesn't reset on the minute.\n3. If `limit` or more times are left, it returns `false` (blocked).\n4. Otherwise it records the current time and returns `true` (allowed).\n\n**Example with `limit = 2` and a 1-second window:**\n\n| Time | Call | Result |\n|---|---|---|\n| 0 ms | `tryAcquire(\"bob\")` | `true` |\n| 100 ms | `tryAcquire(\"bob\")` | `true` |\n| 500 ms | `tryAcquire(\"bob\")` | `false` (2 already in the window) |\n| 1001 ms | `tryAcquire(\"bob\")` | `true` (the 0 ms call has left the window) |\n| 500 ms | `tryAcquire(\"amy\")` | `true` (each key has its own count) |\n\n**Status:** nothing in the project uses it, and it has no tests.\n\n**One weakness I found by reading the code:** it never deletes a key. Every new key adds a map entry that stays forever, even after it goes quiet. With many different keys (one per IP address, for example), memory keeps growing.\n\nNext: want me to add tests for it and fix the memory growth? That's about 10 minutes.",
+    "costUsd": 0.3646334
+  },
+  {
+    "setup": "i-have-adhd",
+    "repetition": 2,
+    "turn": 7,
+    "prompt": "Any bugs in it?",
+    "reply": "It has no bug in normal use: with a positive whole-number limit and a positive window, it counts correctly. It does have 3 weaknesses. I found them by reading the code; I didn't run anything.\n\n**Ranked by impact:**\n\n1. **Memory grows forever** (`src/rate-limiter.ts:23`). Keys are never removed. Every new IP address or user ID adds an entry that stays after it goes quiet. This matters on a long-running server with many keys.\n2. **A bad config silently turns limiting off** (`src/rate-limiter.ts:6`). The constructor doesn't check its inputs:\n   - `windowMilliseconds` negative or `NaN`: every old call gets dropped, so every call is **allowed**.\n   - `limit` of `NaN`: `length >= NaN` is always false, so every call is **allowed**.\n   - `limit` of `2.5`: allows 3 calls.\n   - `limit` of `0` or below: blocks every call.\n3. **The system clock moving backwards can block a key too long** (`src/rate-limiter.ts:13`). If the clock is set back (say, an NTP correction), timestamps recorded before the change now look like they're in the future. They keep counting until the clock catches up, so the key stays blocked for longer than the window.\n\n**What's correct:** blocked calls aren't recorded, so retrying doesn't extend a block. The stored list per key never grows past `limit`. A call exactly one window after an earlier one is allowed.\n\n**Fixes I'd make:** for 1, delete a key once its list is empty. For 2, throw on bad constructor values. For 3, ignoring it is fine unless you run on machines with unstable clocks.\n\nNext: want me to fix 1 and 2 and add tests? That's about 10 minutes.",
+    "costUsd": 0.3985466
+  },
+  {
+    "setup": "i-have-adhd",
+    "repetition": 2,
+    "turn": 8,
+    "prompt": "Where is the tax rate defined?",
+    "reply": "It's defined at `src/money.ts:1`:\n\n```ts\nexport const TAX_RATE = 0.21;\n```\n\nThat's 21%, and it's the only place the rate is set. Only `addTax` in the same file uses it. `Cart.grossTotal()` in `src/cart.ts` gets the tax through `addTax`.\n\nTo change the rate, edit that one line. The tax test at `tests/money.test.ts:6` expects 21%, so it will fail until you update its expected value too.",
+    "costUsd": 0.42171859999999994
+  },
+  {
+    "setup": "i-have-adhd",
+    "repetition": 2,
+    "turn": 9,
+    "prompt": "Add a removeItem(sku) method to Cart.",
+    "reply": "`Cart.removeItem(sku)` is in place at `src/cart.ts:17`, and all 8 of 8 tests pass, including 2 new ones.\n\n**How it works:**\n\n1. It removes **every** line with that SKU. `addItem` doesn't merge repeated SKUs, so `\"mug\"` can appear on several lines, and all of them are removed.\n2. It returns `true` if it removed anything and `false` if the SKU wasn't in the cart. It doesn't throw an error either way.\n\n**New tests in `tests/cart.test.ts`:**\n\n- Removing `\"mug\"` from a cart with two mug lines and one tea line leaves only the tea (€4).\n- Removing a SKU that isn't in the cart returns `false` and leaves the total unchanged.\n\nNext: if you'd rather it remove only one unit or one line, say which and I'll change it (about 5 minutes).",
+    "costUsd": 0.48867979999999994
+  },
+  {
+    "setup": "i-have-adhd",
+    "repetition": 2,
+    "turn": 10,
+    "prompt": "Do all the tests pass now?",
+    "reply": "Yes. I just ran `npm test` again: 8 of 8 tests pass and none fail.\n\n**What the tests cover:**\n\n- **Cart (6 tests):** totals, `removeItem`, and discounts.\n- **Money (2 tests):** tax rounding and euro formatting.\n- **Rate limiter:** no tests. The memory growth and the unchecked constructor inputs from earlier are still unfixed.\n\nNext: want me to add rate limiter tests and fix those 2 issues? That's about 10 minutes.",
+    "costUsd": 0.5167708
+  }
+]

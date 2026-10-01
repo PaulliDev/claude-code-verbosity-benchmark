@@ -1,0 +1,15 @@
+{
+  "setup": "i-have-adhd",
+  "promptId": "run-one-file",
+  "promptKind": "lookup",
+  "repetition": 2,
+  "model": "claude-opus-5-5",
+  "reply": "```\nnode --test tests/cart.test.ts\n```\n\nI ran it just now and both cart tests pass (2 of 2, about 80 ms).\n\nDon't use `npm test -- tests/cart.test.ts`. The `test` script in `package.json` already includes `tests/*.test.ts`, so it runs every test file, not just the cart ones.\n\n**Next:** paste the command above into your terminal.",
+  "outputTokens": 526,
+  "costUsd": 0.13995459999999998,
+  "activationCostUsd": 0.0668406,
+  "durationMilliseconds": 8031,
+  "turns": 3,
+  "isError": false,
+  "checkPassed": null
+}

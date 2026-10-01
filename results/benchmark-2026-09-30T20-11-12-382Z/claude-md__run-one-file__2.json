@@ -1,0 +1,15 @@
+{
+  "setup": "claude-md",
+  "promptId": "run-one-file",
+  "promptKind": "lookup",
+  "repetition": 2,
+  "model": "claude-opus-5-5",
+  "reply": "Run the cart test file directly with Node's test runner:\n\n```sh\nnode --test tests/cart.test.ts\n```\n\nDon't use `npm test -- tests/cart.test.ts`. The `test` script already passes the `tests/*.test.ts` glob, so npm would add your file to it and still run every test.",
+  "outputTokens": 333,
+  "costUsd": 0.1036418,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 5998,
+  "turns": 2,
+  "isError": false,
+  "checkPassed": null
+}

@@ -1,0 +1,15 @@
+{
+  "setup": "claude-md",
+  "promptId": "why-failing",
+  "promptKind": "question",
+  "repetition": 1,
+  "model": "claude-opus-5-5",
+  "reply": "The test fails because `addTax` never rounds to cents, even though its comment says it does. It returns `19.99 * 1.21 = 24.1879`, and the test expects `24.19` (`src/money.ts:5`). One way to fix it:\n\n```ts\nreturn Math.round(netAmount * (1 + TAX_RATE) * 100) / 100;\n```",
+  "outputTokens": 628,
+  "costUsd": 0.1278984,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 15601,
+  "turns": 4,
+  "isError": false,
+  "checkPassed": null
+}

@@ -1,0 +1,15 @@
+{
+  "setup": "i-have-adhd",
+  "promptId": "where-defined",
+  "promptKind": "lookup",
+  "repetition": 1,
+  "model": "claude-opus-5-5",
+  "reply": "The tax rate is in `src/money.ts:1`: `export const TAX_RATE = 0.21;` (21%).\n\n`addTax()` in `src/money.ts:4` is the only place that uses it, and `src/cart.ts:31` calls `addTax()`.\n\nSeparately, there's a likely bug. The comment on `addTax` says the result is \"rounded to cents,\" but the code doesn't round. `addTax(19.99)` returns `24.1879`, and `tests/money.test.ts:6` expects `24.19`, so that test likely fails. I haven't run it.\n\nNext: want me to add the rounding to `addTax`?",
+  "outputTokens": 403,
+  "costUsd": 0.1329666,
+  "activationCostUsd": 0.0666406,
+  "durationMilliseconds": 5589,
+  "turns": 2,
+  "isError": false,
+  "checkPassed": null
+}

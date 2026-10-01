@@ -1,0 +1,14 @@
+{
+  "kind": "conversation",
+  "setups": [
+    "default",
+    "concise",
+    "claude-md",
+    "i-have-adhd"
+  ],
+  "repetitions": 2,
+  "promptIds": [],
+  "startedAt": "2026-09-30T20:11:12.406Z",
+  "claudeCodeVersion": "2.1.285 (Claude Code)",
+  "nodeVersion": "v22.21.1"
+}

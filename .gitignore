@@ -1,0 +1,13 @@
+node_modules/
+.DS_Store
+*.log
+
+# AI assistant / editor files at the repo root.
+# Anchored with / so the setups can still ship their own .claude/ and CLAUDE.md.
+/CLAUDE.md
+/CLAUDE.local.md
+/.claude/
+/AGENTS.md
+/.cursor/
+/.vscode/
+/.idea/

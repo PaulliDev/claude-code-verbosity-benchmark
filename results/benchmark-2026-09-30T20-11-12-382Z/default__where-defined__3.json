@@ -1,0 +1,15 @@
+{
+  "setup": "default",
+  "promptId": "where-defined",
+  "promptKind": "lookup",
+  "repetition": 3,
+  "model": "claude-opus-5-5",
+  "reply": "The tax rate is defined in `src/money.ts:1` as `export const TAX_RATE = 0.21;`, which is 21%. The only place it's used is `addTax()` in the same file, and `src/cart.ts:31` calls that function to get the gross total.\n\nThere's also a mismatch in that function. Its comment says the result is \"rounded to cents\", but `addTax()` returns `netAmount * (1 + TAX_RATE)` without rounding. So `tests/money.test.ts:6`, which expects `addTax(19.99)` to be `24.19`, should fail, because the function actually returns about `24.1879`.",
+  "outputTokens": 345,
+  "costUsd": 0.102032,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 5011,
+  "turns": 2,
+  "isError": false,
+  "checkPassed": null
+}

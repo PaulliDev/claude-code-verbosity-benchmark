@@ -1,0 +1,15 @@
+{
+  "setup": "claude-md",
+  "promptId": "add-method",
+  "promptKind": "task",
+  "repetition": 2,
+  "model": "claude-opus-5-5",
+  "reply": "I added `removeItem(sku)` to `src/cart.ts:17`. Because `addItem` can add the same SKU more than once, it removes every line with that SKU. If the SKU isn't in the cart, it does nothing. I haven't compiled or tested it.",
+  "outputTokens": 605,
+  "costUsd": 0.1241066,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 8245,
+  "turns": 4,
+  "isError": false,
+  "checkPassed": true
+}

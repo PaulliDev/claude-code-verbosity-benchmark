@@ -1,0 +1,15 @@
+{
+  "setup": "i-have-adhd",
+  "promptId": "add-method",
+  "promptKind": "task",
+  "repetition": 1,
+  "model": "claude-opus-5-5",
+  "reply": "I added `Cart.removeItem(sku)` in `src/cart.ts:17`. It removes every line item with that SKU, and `netTotal()` and `grossTotal()` drop by that amount. I haven't run or tested it.\n\n- **Why all matches:** `addItem` allows the same SKU more than once, so removing only the first match would leave some behind.\n- **Unknown SKU:** nothing happens and no error is thrown.\n- **In place:** it uses `splice` because `items` is `readonly`.\n\nSeparately: `applyDiscount` adds each new percent to the old one, so two 60% discounts make 120% and the total goes negative. Want me to cap it next? That's about 5 minutes.\n\nNext: add a test that calls `addItem` for `\"A\"` twice, then `removeItem(\"A\")`, and checks that `netTotal()` is `0`.",
+  "outputTokens": 894,
+  "costUsd": 0.1583112,
+  "activationCostUsd": 0.1096486,
+  "durationMilliseconds": 13296,
+  "turns": 4,
+  "isError": false,
+  "checkPassed": true
+}

@@ -1,0 +1,64 @@
+[
+  {
+    "id": "why-failing",
+    "kind": "question",
+    "text": "Why is the tax test failing?",
+    "expectedAnswer": "addTax in src/money.ts does not round to cents, so 19.99 returns 24.1879 while the test expects 24.19.",
+    "check": null
+  },
+  {
+    "id": "safe-twice",
+    "kind": "yes-no",
+    "text": "Is it safe to call applyDiscount twice on the same cart?",
+    "expectedAnswer": "No. applyDiscount adds to discountPercent (+=), so a second call stacks the discounts.",
+    "check": null
+  },
+  {
+    "id": "fix-failing",
+    "kind": "task",
+    "text": "Fix the failing test.",
+    "expectedAnswer": "addTax now rounds to cents and all tests pass.",
+    "check": {
+      "type": "tests-pass"
+    }
+  },
+  {
+    "id": "explain-module",
+    "kind": "question",
+    "text": "What does src/rate-limiter.ts do?",
+    "expectedAnswer": "A per-key sliding-window rate limiter: tryAcquire allows up to `limit` calls per key within `windowMilliseconds` and returns false once the limit is reached.",
+    "check": null
+  },
+  {
+    "id": "review-file",
+    "kind": "review",
+    "text": "Review src/rate-limiter.ts for bugs.",
+    "expectedAnswer": "The main real issue: the map never removes old keys, so memory grows with every new key. Whether a timestamp exactly at the window start counts as expired (the strict >) is a design choice, so calling it fine or flagging it are both acceptable. Extra minor observations are fine if they are accurate.",
+    "check": null
+  },
+  {
+    "id": "where-defined",
+    "kind": "lookup",
+    "text": "Where is the tax rate defined?",
+    "expectedAnswer": "In src/money.ts, as TAX_RATE = 0.21.",
+    "check": null
+  },
+  {
+    "id": "add-method",
+    "kind": "task",
+    "text": "Add a removeItem(sku) method to Cart.",
+    "expectedAnswer": "Cart has a removeItem(sku) method that removes the matching item(s). The tax test was already failing before this task and is unrelated, so a reply that mentions it is fine.",
+    "check": {
+      "type": "file-contains",
+      "file": "src/cart.ts",
+      "text": "removeItem"
+    }
+  },
+  {
+    "id": "run-one-file",
+    "kind": "lookup",
+    "text": "How do I run only the cart tests?",
+    "expectedAnswer": "node --test tests/cart.test.ts",
+    "check": null
+  }
+]

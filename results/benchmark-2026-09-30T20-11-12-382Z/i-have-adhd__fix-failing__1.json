@@ -1,0 +1,15 @@
+{
+  "setup": "i-have-adhd",
+  "promptId": "fix-failing",
+  "promptKind": "task",
+  "repetition": 1,
+  "model": "claude-opus-5-5",
+  "reply": "The failing test is fixed and all 4 tests now pass.\n\n- **Cause:** `addTax` in `src/money.ts:5` didn't round, even though its comment says it should. `19.99 × 1.21` gave `24.1879`, but the test expects `24.19`.\n- **Fix:** it now rounds to cents: `Math.round(netAmount * (1 + TAX_RATE) * 100) / 100`.\n\n**Next:** run `npm test` to confirm it passes on your end too.",
+  "outputTokens": 1035,
+  "costUsd": 0.17726999999999998,
+  "activationCostUsd": 0.1100886,
+  "durationMilliseconds": 13338,
+  "turns": 6,
+  "isError": false,
+  "checkPassed": true
+}

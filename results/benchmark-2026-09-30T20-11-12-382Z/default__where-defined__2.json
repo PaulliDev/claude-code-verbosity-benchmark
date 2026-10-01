@@ -1,0 +1,15 @@
+{
+  "setup": "default",
+  "promptId": "where-defined",
+  "promptKind": "lookup",
+  "repetition": 2,
+  "model": "claude-opus-5-5",
+  "reply": "The tax rate is defined at `src/money.ts:1` as `export const TAX_RATE = 0.21;` (21%). It's used in `addTax()` on line 5 of the same file, and `src/cart.ts:31` calls `addTax()` to get the cart total.\n\nOne thing I noticed: the comment on `addTax()` says the result is \"rounded to cents,\" but the code doesn't round. It returns `netAmount * (1 + TAX_RATE)` as is. The test in `tests/money.test.ts:6` expects `addTax(19.99)` to equal `24.19`, but the function returns about `24.1879`, so that test probably fails.",
+  "outputTokens": 365,
+  "costUsd": 0.104164,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 4986,
+  "turns": 2,
+  "isError": false,
+  "checkPassed": null
+}

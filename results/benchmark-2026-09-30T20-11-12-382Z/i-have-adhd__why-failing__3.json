@@ -1,0 +1,15 @@
+{
+  "setup": "i-have-adhd",
+  "promptId": "why-failing",
+  "promptKind": "question",
+  "repetition": 3,
+  "model": "claude-opus-5-5",
+  "reply": "`addTax` doesn't round. The comment in `src/money.ts:3` says \"rounded to cents\", but the function returns the raw product.\n\n- **Where it fails:** `tests/money.test.ts:6`\n- **Expected:** `24.19`\n- **Actual:** `24.1879` (19.99 × 1.21)\n\n**Fix:** in `src/money.ts:5`, replace the return line with:\n\n```ts\nreturn Math.round(netAmount * (1 + TAX_RATE) * 100) / 100;\n```\n\nThe other 3 tests pass, so this is the only failure.\n\nNext: say \"apply it\" and I'll make the edit and rerun `npm test` (about 1 minute).",
+  "outputTokens": 912,
+  "costUsd": 0.16403739999999997,
+  "activationCostUsd": 0.1089646,
+  "durationMilliseconds": 12631,
+  "turns": 4,
+  "isError": false,
+  "checkPassed": null
+}

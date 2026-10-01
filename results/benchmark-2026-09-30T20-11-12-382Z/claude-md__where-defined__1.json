@@ -1,0 +1,15 @@
+{
+  "setup": "claude-md",
+  "promptId": "where-defined",
+  "promptKind": "lookup",
+  "repetition": 1,
+  "model": "claude-opus-5-5",
+  "reply": "It's `TAX_RATE = 0.21` in `src/money.ts:1`, and `addTax` uses it in the same file.\n\nSeparately, `addTax` doesn't round to cents even though its comment says it does. `19.99 * 1.21` is `24.1879`, so the test at `tests/money.test.ts:6` that expects `24.19` will likely fail.",
+  "outputTokens": 280,
+  "costUsd": 0.1024102,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 4349,
+  "turns": 2,
+  "isError": false,
+  "checkPassed": null
+}

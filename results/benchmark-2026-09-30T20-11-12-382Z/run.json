@@ -1,0 +1,23 @@
+{
+  "kind": "benchmark",
+  "setups": [
+    "default",
+    "concise",
+    "claude-md",
+    "i-have-adhd"
+  ],
+  "repetitions": 3,
+  "promptIds": [
+    "why-failing",
+    "safe-twice",
+    "fix-failing",
+    "explain-module",
+    "review-file",
+    "where-defined",
+    "add-method",
+    "run-one-file"
+  ],
+  "startedAt": "2026-09-30T20:11:12.382Z",
+  "claudeCodeVersion": "2.1.285 (Claude Code)",
+  "nodeVersion": "v22.21.1"
+}

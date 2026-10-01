@@ -1,0 +1,15 @@
+{
+  "setup": "i-have-adhd",
+  "promptId": "add-method",
+  "promptKind": "task",
+  "repetition": 3,
+  "model": "claude-opus-5-5",
+  "reply": "`Cart.removeItem(sku)` is added in `src/cart.ts:17` and its new test passes.\n\n- **What it does:** it removes every line with that SKU. It returns `true` if it removed anything and `false` if the SKU wasn't in the cart.\n- **Why every line:** `addItem` allows the same SKU to be added more than once, so removing only the first match would leave some behind.\n- **Test:** added to `tests/cart.test.ts`. It checks that the total drops and that a second removal returns `false`.\n\n`npm test` shows 4 passing and 1 failing. The failure is in `tests/money.test.ts:6`, not the cart. It expects `24.19` but gets `24.1879`, because `addTax` in `src/money.ts` doesn't round to cents. Nothing I changed touches that code.\n\nNext: want me to fix the rounding in `addTax`? It's about 2 minutes.",
+  "outputTokens": 1952,
+  "costUsd": 0.237433,
+  "activationCostUsd": 0.06612059999999999,
+  "durationMilliseconds": 22170,
+  "turns": 10,
+  "isError": false,
+  "checkPassed": true
+}

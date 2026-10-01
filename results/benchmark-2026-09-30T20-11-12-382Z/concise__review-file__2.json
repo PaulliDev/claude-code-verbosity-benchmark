@@ -1,0 +1,15 @@
+{
+  "setup": "concise",
+  "promptId": "review-file",
+  "promptKind": "review",
+  "repetition": 2,
+  "model": "claude-opus-5-5",
+  "reply": "I found no correctness bug in the core logic. It's a sliding-window log: it drops timestamps older than the window, rejects the call once `limit` is reached, and doesn't record rejected calls. The boundary is consistent: a timestamp exactly `windowMilliseconds` old counts as expired.\n\nThree weaker issues:\n\n1. **Memory leak (`src/rate-limiter.ts:4`, `:18`).** Keys are never removed from `timestampsByKey`. A key is only pruned when that same key is called again, and even then its array is stored back, not deleted. With high-cardinality keys like IPs or user IDs, the map grows without bound. Fix: `delete` the key when `recent` is empty, and periodically sweep idle keys (or use a TTL/LRU map).\n2. **No input validation (`:6`).** If `limit <= 0`, every call is rejected. If `limit` or `windowMilliseconds` is `NaN`, every call is allowed, because `>= NaN` and `> NaN` are always false. A negative window also lets everything through. Validate both in the constructor.\n3. **Out-of-order `now` (`:11`).** If a caller passes a `now` earlier than timestamps already stored, those \"future\" entries stay counted for longer than the window. This only matters if callers inject timestamps, and it's worth a guard or a doc note.",
+  "outputTokens": 767,
+  "costUsd": 0.115806,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 10122,
+  "turns": 2,
+  "isError": false,
+  "checkPassed": null
+}

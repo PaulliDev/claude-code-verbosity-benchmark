@@ -1,0 +1,15 @@
+{
+  "setup": "concise",
+  "promptId": "why-failing",
+  "promptKind": "question",
+  "repetition": 3,
+  "model": "claude-opus-5-5",
+  "reply": "The test fails because `addTax` never rounds to cents, even though its comment says it does. `src/money.ts:5` returns `netAmount * (1 + TAX_RATE)` without rounding, so `addTax(19.99)` gives `24.1879` and the test expects `24.19`:\n\n```\n24.1879 !== 24.19\n```\n\nThis is the only failing test. To fix it, round the result:\n\n```ts\nreturn Math.round(netAmount * (1 + TAX_RATE) * 100) / 100;\n```\n\nWith this change `addTax(19.99)` returns `24.19`. It would also make `Cart.grossTotal()` return amounts rounded to cents, which it doesn't do now. Want me to apply it?",
+  "outputTokens": 793,
+  "costUsd": 0.135638,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 10602,
+  "turns": 4,
+  "isError": false,
+  "checkPassed": null
+}

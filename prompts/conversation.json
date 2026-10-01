@@ -1,0 +1,12 @@
+[
+  "What does this project do?",
+  "Why is the tax test failing?",
+  "Fix it.",
+  "Is it safe to call applyDiscount twice on the same cart?",
+  "Make it safe to call more than once.",
+  "What does src/rate-limiter.ts do?",
+  "Any bugs in it?",
+  "Where is the tax rate defined?",
+  "Add a removeItem(sku) method to Cart.",
+  "Do all the tests pass now?"
+]

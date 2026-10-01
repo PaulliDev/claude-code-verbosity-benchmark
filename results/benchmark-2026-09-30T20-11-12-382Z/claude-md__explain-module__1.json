@@ -1,0 +1,15 @@
+{
+  "setup": "claude-md",
+  "promptId": "explain-module",
+  "promptKind": "question",
+  "repetition": 1,
+  "model": "claude-opus-5-5",
+  "reply": "It's a per-key sliding-window rate limiter: `tryAcquire(key)` returns `true` and records the request if the key has made fewer than `limit` requests in the last `windowMilliseconds`. Otherwise it returns `false`. Each key's timestamps are stored in memory, and old ones are dropped on every call.",
+  "outputTokens": 238,
+  "costUsd": 0.10473959999999999,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 3924,
+  "turns": 2,
+  "isError": false,
+  "checkPassed": null
+}

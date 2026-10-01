@@ -1,0 +1,15 @@
+{
+  "setup": "default",
+  "promptId": "explain-module",
+  "promptKind": "question",
+  "repetition": 1,
+  "model": "claude-opus-5-5",
+  "reply": "`src/rate-limiter.ts` is a **sliding-window rate limiter** that tracks each key separately, such as a user ID or IP address.\n\n- **Setup:** `new RateLimiter(limit, windowMilliseconds)` allows at most `limit` actions per key within any rolling window of `windowMilliseconds`.\n- **`tryAcquire(key, now?)`** (`src/rate-limiter.ts:11`):\n  1. It loads the timestamps stored for that key and drops any older than `now - windowMilliseconds`.\n  2. If the key already has `limit` or more recent timestamps, it saves the trimmed list and returns `false` (denied).\n  3. Otherwise it records `now` and returns `true` (allowed).\n- **`now`** defaults to `Date.now()` but can be passed in, which makes tests deterministic.\n\nThings to be aware of:\n- **Rejected attempts aren't recorded.** A client that keeps retrying doesn't push back its own reset time.\n- **Memory grows with the number of keys.** Old timestamps are only removed when that key is checked again, and a key is never deleted from the map. With many one-off keys, such as a different IP address per request, memory keeps growing.\n- **It only works within one process.** The state is an in-memory `Map`, so it isn't shared across processes or servers and resets when the process restarts.\n- **Cost:** each call filters that key's list, which holds at most about `limit` timestamps. That's fine for small limits.",
+  "outputTokens": 652,
+  "costUsd": 0.1109048,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 7835,
+  "turns": 2,
+  "isError": false,
+  "checkPassed": null
+}

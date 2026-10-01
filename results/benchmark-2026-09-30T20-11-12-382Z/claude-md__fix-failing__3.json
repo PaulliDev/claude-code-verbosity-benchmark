@@ -1,0 +1,15 @@
+{
+  "setup": "claude-md",
+  "promptId": "fix-failing",
+  "promptKind": "task",
+  "repetition": 3,
+  "model": "claude-opus-5-5",
+  "reply": "The failing test passes now, and all 4 tests pass. `addTax` in `src/money.ts:5` said in its comment that it rounds to cents, but it didn't. It now rounds with `Math.round(x * 100) / 100`, so `addTax(19.99)` returns `24.19` instead of `24.1879`.",
+  "outputTokens": 1340,
+  "costUsd": 0.16417359999999998,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 17302,
+  "turns": 9,
+  "isError": false,
+  "checkPassed": true
+}

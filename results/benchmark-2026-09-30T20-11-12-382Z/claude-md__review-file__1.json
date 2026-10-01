@@ -1,0 +1,15 @@
+{
+  "setup": "claude-md",
+  "promptId": "review-file",
+  "promptKind": "review",
+  "repetition": 1,
+  "model": "claude-opus-5-5",
+  "reply": "The rate-limiting logic in `src/rate-limiter.ts` is correct, but there is one real bug and one gap in input handling:\n\n1. **Unbounded memory growth (`src/rate-limiter.ts:13-23`).** A key's timestamps are only pruned when that same key is used again, and the key itself is never deleted. With many distinct keys (per-IP, per-user), every key seen stays in `timestampsByKey` forever. At minimum, delete the key when `recent` is empty. Better, also add a periodic sweep or an LRU cap so idle keys get evicted.\n\n2. **No validation of constructor arguments (`src/rate-limiter.ts:6-9`).** If `limit` is `NaN`, `recent.length >= NaN` is always false, so every request is allowed. A `NaN` or negative `windowMilliseconds` also breaks the window math. Reject values that are not finite and positive.\n\nA request that is exactly `windowMilliseconds` old counts as expired because the filter uses `>`. That's fine, as long as it's what you intend.",
+  "outputTokens": 697,
+  "costUsd": 0.11391159999999999,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 9519,
+  "turns": 2,
+  "isError": false,
+  "checkPassed": null
+}

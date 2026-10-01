@@ -1,0 +1,15 @@
+{
+  "setup": "concise",
+  "promptId": "add-method",
+  "promptKind": "task",
+  "repetition": 1,
+  "model": "claude-opus-5-5",
+  "reply": "I added `Cart.removeItem(sku)` in `src/cart.ts:17`. It removes every line with that SKU, since `addItem` allows the same SKU to be added more than once, and does nothing if the SKU isn't in the cart. I added a test for it in `tests/cart.test.ts`, and it passes.\n\nOne test fails, but it isn't related to this change: `tests/money.test.ts:5` (\"adds 21% tax, rounded to cents\") expects `24.19` but gets `24.1879`. `addTax` in `src/money.ts` doesn't round to cents. I didn't change it; tell me if you want me to fix it.",
+  "outputTokens": 1656,
+  "costUsd": 0.177098,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 31300,
+  "turns": 10,
+  "isError": false,
+  "checkPassed": true
+}

@@ -1,0 +1,582 @@
+{
+  "claude-md__add-method__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states that removeItem(sku) was added and the reply describes its behavior. It makes no false claims and says plainly that nothing was compiled or tested."
+  },
+  "claude-md__add-method__1__second-opinion": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states that removeItem(sku) was added and removes all lines with the matching SKU, which matches the reference; it also says plainly that nothing was compiled or tested, so there are no false claims."
+  },
+  "claude-md__add-method__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply states it added removeItem(sku) to Cart, which removes all lines with that SKU, and it honestly notes it was not tested; this matches the reference."
+  },
+  "claude-md__add-method__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply states it added removeItem(sku) to Cart, which removes all matching items, and makes no false claims."
+  },
+  "claude-md__explain-module__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply's first sentence states it is a per-key sliding-window rate limiter and describes tryAcquire's allow/deny behavior, which matches the reference. The extra detail about in-memory timestamps is consistent with a sliding-window implementation."
+  },
+  "claude-md__explain-module__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states it is a per-key sliding-window rate limiter, and the tryAcquire description matches the reference with no false claims."
+  },
+  "claude-md__explain-module__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply states it is a per-key sliding-window limiter and that tryAcquire returns false once `limit` is reached, matching the reference with no false claims."
+  },
+  "claude-md__explain-module__3__second-opinion": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply identifies a per-key sliding-window limiter and accurately describes tryAcquire's limit and windowMilliseconds behavior, matching the reference."
+  },
+  "claude-md__fix-failing__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply opens by saying the test is fixed and all 4 tests pass, and it says addTax now rounds to cents, which matches the reference."
+  },
+  "claude-md__fix-failing__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply opens with 'Fixed.' and says addTax now rounds to cents and all tests pass, which matches the reference, with no false claims."
+  },
+  "claude-md__fix-failing__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states the failing test now passes and all tests pass; the rounding fix matches the reference with no false claims."
+  },
+  "claude-md__review-file__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 22,
+    "reason": "It identifies the unbounded memory growth as the main bug, and its extra points (NaN limit validation, the strict > being a design choice) are accurate. The opening sentence only calls the logic correct, so the first direct answer comes after about 22 words."
+  },
+  "claude-md__review-file__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "It opens by naming the unbounded memory growth as the one real bug, which matches the reference. The extra points on validation and non-monotonic `now` are accurate minor observations, and nothing in the reply is false."
+  },
+  "claude-md__review-file__2__second-opinion": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply's first sentence says the logic is correct and the one real bug is unbounded memory growth. That matches the reference, and the extra observations (constructor validation, non-monotonic `now`) are accurate."
+  },
+  "claude-md__review-file__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "Identifies the memory leak from keys never being removed as the real bug, and the extra observations are accurate, with no false claims."
+  },
+  "claude-md__run-one-file__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence gives the reference command exactly; the extra npm warning is a plausible, non-contradictory caveat."
+  },
+  "claude-md__run-one-file__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 12,
+    "reason": "The reply gives the reference command `node --test tests/cart.test.ts` and adds an accurate warning about `npm test --`, with no false claims."
+  },
+  "claude-md__run-one-file__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply opens with the exact reference command, and its note about why `npm test --` won't work is a plausible caveat, not a false claim."
+  },
+  "claude-md__safe-twice__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "It opens with 'No' and correctly says applyDiscount adds to the existing discount so two calls stack, which matches the reference. The extra claims about the missing cap and a negative netTotal() are plausible details, not contradictions."
+  },
+  "claude-md__safe-twice__1__second-opinion": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "Opens with 'No' and correctly says applyDiscount adds to the existing discount so repeated calls stack, matching the reference. The extra claims about no cap and a negative netTotal() are plausible and not contradicted."
+  },
+  "claude-md__safe-twice__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply opens with 'No' and correctly says the discount stacks via += on discountPercent. The extra claims about no upper limit and a negative netTotal are plausible details, not contradictions."
+  },
+  "claude-md__safe-twice__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "Starts with 'No' and correctly explains that += stacks discounts (10 twice gives 20%); the extra claim about netTotal going negative past 100% is plausible and doesn't contradict the reference."
+  },
+  "claude-md__where-defined__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence gives TAX_RATE = 0.21 in src/money.ts, matching the reference; the extra rounding and test remarks are hedged and don't contradict it."
+  },
+  "claude-md__where-defined__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply states the tax rate is defined in src/money.ts as TAX_RATE = 0.21, matching the reference, and the first sentence answers directly."
+  },
+  "claude-md__where-defined__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply states the tax rate is defined in src/money.ts as TAX_RATE = 0.21, matching the reference, and the first sentence already answers."
+  },
+  "claude-md__where-defined__3__second-opinion": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply gives src/money.ts and TAX_RATE = 0.21, matching the reference, and its first sentence already answers."
+  },
+  "claude-md__why-failing__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states that addTax doesn't round to cents, and the reply gives 24.1879 versus the expected 24.19, matching the reference."
+  },
+  "claude-md__why-failing__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply's first sentence says addTax in src/money.ts doesn't round to cents, and it gives 24.1879 versus the expected 24.19, which matches the reference."
+  },
+  "claude-md__why-failing__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states addTax never rounds, and the reply gives the 24.1879 vs 24.19 mismatch, matching the reference with no false claims."
+  },
+  "concise__add-method__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states that removeItem(sku) was added and removes matching items. The unrelated tax test failure is mentioned, which the reference allows."
+  },
+  "concise__add-method__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states that removeItem(sku) was added to Cart and removes all entries with that SKU, which matches the reference. The reply says plainly that it wasn't compiled or tested, so it makes no false claims."
+  },
+  "concise__add-method__2__second-opinion": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states removeItem(sku) was added, it removes all matching entries, and it honestly notes it wasn't tested."
+  },
+  "concise__add-method__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states that removeItem(sku) was added to Cart and the reply matches the reference by removing all items with that SKU. It makes no false claims and says plainly that it wasn't run."
+  },
+  "concise__explain-module__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states it's a per-key sliding-window limiter allowing at most `limit` calls per `windowMilliseconds`, and the tryAcquire description matches the reference with no contradictions."
+  },
+  "concise__explain-module__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply's first sentence says it is a per-key sliding-window rate limiter, and its description of tryAcquire matches the reference. The memory-growth note is an extra detail, not a contradiction."
+  },
+  "concise__explain-module__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states it's a sliding-window rate limiter and the next gives the per-key limit/window behavior of tryAcquire, matching the reference with no contradictions."
+  },
+  "concise__fix-failing__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states the fix and that all tests pass, matching the reference (addTax rounds to cents); the extra cart.ts note is not contradicted."
+  },
+  "concise__fix-failing__1__second-opinion": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply states the test is fixed and all tests pass, and that addTax now rounds to cents, which matches the reference. The extra note about cart.ts is not a false claim."
+  },
+  "concise__fix-failing__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states the test passes, and the reply explains the rounding fix in addTax, which matches the reference with no false claims."
+  },
+  "concise__fix-failing__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply's first sentence says the test is fixed and all tests pass, and the rounding fix matches the reference. It makes no false claims."
+  },
+  "concise__review-file__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply's first finding is the memory leak from keys that are never removed, which matches the reference. It calls the boundary check correct, which the reference allows. The other issues it lists (constructor validation, clock going backwards) are plausible and accurate."
+  },
+  "concise__review-file__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "It identifies the memory leak from keys never being removed, which is the reference's main issue. Its other observations (no input validation, out-of-order `now`) are accurate, and it treats the boundary as a consistent design choice."
+  },
+  "concise__review-file__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "It identifies the unbounded memory growth from never-removed keys as the main issue, and the extra observations (NaN limit, out-of-order now) are accurate."
+  },
+  "concise__review-file__3__second-opinion": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "It flags the unbounded map growth as the main issue, the same as the reference, and its other observations (constructor validation, out-of-order `now`) are accurate minor points."
+  },
+  "concise__run-one-file__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply gives the exact reference command `node --test tests/cart.test.ts` in its first sentence and adds no false claims."
+  },
+  "concise__run-one-file__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 7,
+    "reason": "The reply gives the reference command `node --test tests/cart.test.ts` with no false claims; the extra npm caveat and `--test-name-pattern` tip are consistent with it."
+  },
+  "concise__run-one-file__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply's first sentence leads directly into the exact reference command, and the extra claims about running it and npm test are plausible and not contradicted."
+  },
+  "concise__safe-twice__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply opens with 'No' and correctly says applyDiscount uses += so repeated calls stack, which matches the reference; the extra details about no upper cap and negative inputs don't contradict it."
+  },
+  "concise__safe-twice__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply opens with 'No' and correctly says applyDiscount adds to the existing discount, so two calls stack; the extra detail about over-100% totals and negative percent is consistent with that."
+  },
+  "concise__safe-twice__2__second-opinion": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply opens with 'No' and correctly explains that applyDiscount stacks via += as the reference says, and its added detail about exceeding 100% and a fix is consistent with that."
+  },
+  "concise__safe-twice__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "It opens with 'No' and correctly explains that += stacks discounts; the extra details about clamping and negatives don't contradict the reference."
+  },
+  "concise__where-defined__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states TAX_RATE = 0.21 in src/money.ts, matching the reference, and the extra detail about line 5 doesn't contradict it."
+  },
+  "concise__where-defined__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 7,
+    "reason": "The reply correctly places TAX_RATE = 0.21 in src/money.ts, matching the reference, and its extra bug note doesn't contradict the answer."
+  },
+  "concise__where-defined__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states that TAX_RATE = 0.21 is defined in src/money.ts, which matches the reference, and the extra details contain no evident false claims."
+  },
+  "concise__why-failing__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states that addTax doesn't round to cents, and the reply gives 24.1879 versus the expected 24.19, which matches the reference with no false claims."
+  },
+  "concise__why-failing__1__second-opinion": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence says addTax doesn't round to cents, and the reply gives 24.1879 versus the expected 24.19, which matches the reference with no false claims."
+  },
+  "concise__why-failing__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence says addTax doesn't round to cents, and the reply gives 24.1879 versus the expected 24.19, matching the reference, with no false claims."
+  },
+  "concise__why-failing__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states addTax doesn't round to cents, and the reply gives 24.1879 versus the expected 24.19, matching the reference with no false claims."
+  },
+  "default__add-method__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states that removeItem(sku) was added to Cart, matching the reference. It removes all matching items and makes no false claims. It says the code was not tested."
+  },
+  "default__add-method__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply states it added removeItem(sku) to Cart, removing all matching entries, which matches the reference. It says it did not run it, which is honest, and the extra note about applyDiscount is harmless."
+  },
+  "default__add-method__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states that removeItem(sku) was added to Cart, which matches the reference. The reply says it is untested, which is an honest caveat and not a false claim, and the extra note about applyDiscount is an accurate side observation."
+  },
+  "default__add-method__3__second-opinion": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states that removeItem(sku) was added to Cart and removes all matching lines, which matches the reference. It honestly says it was not compiled or tested and makes no false claims."
+  },
+  "default__explain-module__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence says it is a per-key sliding-window rate limiter, and the tryAcquire description (up to limit per window, false once the limit is reached) matches the reference with no contradicting claims."
+  },
+  "default__explain-module__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply's first sentence says it is a per-key sliding-window rate limiter, and its description of tryAcquire (allow up to limit per window, return false after that) matches the reference with no false claims."
+  },
+  "default__explain-module__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence says it is a per-key sliding-window rate limiter allowing at most `limit` requests per `windowMilliseconds`, and tryAcquire returns false at the limit. This matches the reference, and the extra details contain no evident false claims."
+  },
+  "default__fix-failing__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply's first sentence states the test is fixed and all tests pass, and it explains that addTax now rounds to cents, which matches the reference. It makes no false claims."
+  },
+  "default__fix-failing__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states the fix and that tests pass, and it matches the reference: addTax now rounds to cents. The extra detail about Cart.grossTotal is plausible and is not a false claim."
+  },
+  "default__fix-failing__2__second-opinion": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply's first sentence states the fix and that all tests pass, matching the reference that addTax now rounds to cents."
+  },
+  "default__fix-failing__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states the test was fixed and all tests pass, matching the reference; the floating-point caveat is accurate and does not contradict it."
+  },
+  "default__review-file__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 30,
+    "reason": "It identifies the unbounded map growth as the main bug, calls the strict > boundary acceptable, and its extra observations are accurate."
+  },
+  "default__review-file__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "It identifies the unbounded memory growth from never-removed keys as the main bug, and its extra observations are accurate."
+  },
+  "default__review-file__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "It identifies the unbounded memory growth as the most serious issue, which matches the reference, and its extra observations (clock jumps, NaN arguments, O(limit) filter) are accurate. It treats the window boundary as correct, which the reference allows."
+  },
+  "default__run-one-file__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply gives the exact reference command `node --test tests/cart.test.ts` in the first sentence, and the extra npm and test-name-pattern advice contains no evident false claims."
+  },
+  "default__run-one-file__1__second-opinion": {
+    "correct": true,
+    "wordsBeforeAnswer": 10,
+    "reason": "The reply gives the reference command `node --test tests/cart.test.ts` with no false claims; the extra npm warning and name-pattern tip are accurate additions."
+  },
+  "default__run-one-file__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 12,
+    "reason": "The reply gives the reference command `node --test tests/cart.test.ts`; its extra claims about npm and Node version are plausible and don't contradict it."
+  },
+  "default__run-one-file__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply's first sentence and code block give the reference command `node --test tests/cart.test.ts`. The extra notes on npm, name patterns and Node version are plausible and don't contradict it."
+  },
+  "default__safe-twice__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 3,
+    "reason": "The reply says no and explains that applyDiscount uses += so repeated calls stack discounts, matching the reference, with no false claims evident."
+  },
+  "default__safe-twice__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "Opens with 'No' and correctly explains that += stacks discounts; extra details (negative totals, 19% comparison) are consistent and not false."
+  },
+  "default__safe-twice__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "Opens with 'No' and correctly states that += makes the discounts stack, matching the reference; the extra details (the 19% comparison, negative totals) are accurate and don't contradict it."
+  },
+  "default__safe-twice__3__second-opinion": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "It opens with 'No.' and correctly explains that += stacks discounts, matching the reference. The extra details (negative totals, 19% vs 20%) are accurate consequences and not false claims."
+  },
+  "default__where-defined__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states TAX_RATE = 0.21 in src/money.ts, matching the reference, and the extra details about addTax and the rounding bug are not contradicted."
+  },
+  "default__where-defined__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence correctly states TAX_RATE = 0.21 is defined in src/money.ts, matching the reference; the extra observations don't contradict it."
+  },
+  "default__where-defined__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states TAX_RATE = 0.21 in src/money.ts, matching the reference; the extra details about addTax and rounding are not contradicted by the reference."
+  },
+  "default__why-failing__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence says addTax doesn't round to cents, and the reply gives the 24.1879 vs 24.19 mismatch, which matches the reference."
+  },
+  "default__why-failing__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence says addTax never rounds, and the reply gives 24.1879 versus the expected 24.19, which matches the reference with no false claims."
+  },
+  "default__why-failing__2__second-opinion": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence says addTax never rounds, and the reply gives 24.1879 against the expected 24.19, which matches the reference with no false claims."
+  },
+  "default__why-failing__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence says addTax never rounds, and the reply gives 24.1879 against the expected 24.19, which matches the reference with no false claims."
+  },
+  "i-have-adhd__add-method__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states that Cart.removeItem(sku) was added and removes all matching items, which matches the reference. It honestly says it was not tested, and the extra discount-bug note is accurate and not a false claim."
+  },
+  "i-have-adhd__add-method__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states the result (removeItem added, tests pass). The reply also notes that the unrelated tax test was already failing, which the reference allows."
+  },
+  "i-have-adhd__add-method__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states that removeItem(sku) was added and its test passes. It removes matching items and it mentions the unrelated pre-existing tax failure, which the reference allows."
+  },
+  "i-have-adhd__explain-module__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence correctly describes a per-key sliding-window limiter, and the tryAcquire details match the reference with no contradictions."
+  },
+  "i-have-adhd__explain-module__1__second-opinion": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states it's a per-key rolling-window rate limiter, and the details on tryAcquire, limit and windowMilliseconds match the reference with no false claims."
+  },
+  "i-have-adhd__explain-module__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence says it is a sliding-window rate limiter allowing at most `limit` calls per key in a rolling `windowMilliseconds`, which matches the reference. The extra details (the memory-growth note, the `now` parameter) are consistent with it."
+  },
+  "i-have-adhd__explain-module__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence identifies a per-key sliding-window limiter allowing `limit` calls per `windowMilliseconds`, and the tryAcquire details match the reference. The extra notes add nothing contradictory."
+  },
+  "i-have-adhd__fix-failing__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states the test is fixed and all tests pass, and the rounding-to-cents fix matches the reference with no apparent false claims."
+  },
+  "i-have-adhd__fix-failing__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states the test is fixed and all tests pass, and the rounding fix in addTax matches the reference; the extra note about applyDiscount is a separate observation, not a false claim."
+  },
+  "i-have-adhd__fix-failing__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states that all tests pass, and the reply says addTax now rounds to cents, which matches the reference; the extra note about applyDiscount is a separate observation, not a false claim."
+  },
+  "i-have-adhd__fix-failing__3__second-opinion": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states that all tests pass, and the reply says addTax now rounds to cents. That matches the reference, and the extra note about applyDiscount is a separate offer, not a false claim."
+  },
+  "i-have-adhd__review-file__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply's first sentence names the unbounded map growth as the real bug, which matches the reference. It also treats the strict `>` boundary as acceptable, and its minor NaN/limit observations are accurate."
+  },
+  "i-have-adhd__review-file__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply identifies the unbounded map growth (the reference's main issue) as bug #1, says the exact-boundary expiry is consistent (an acceptable call), and its extra observations on NaN/invalid config and clock jumps are accurate."
+  },
+  "i-have-adhd__review-file__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "It identifies the never-removed keys memory leak as the main bug, accepts the strict > as fine, and its extra observations are accurate."
+  },
+  "i-have-adhd__run-one-file__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 6,
+    "reason": "The reply gives the reference command `node --test tests/cart.test.ts` and adds accurate extra guidance, with no contradictions."
+  },
+  "i-have-adhd__run-one-file__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply's first line is the reference command, and the rest (a test run and a warning about npm test) makes no false claims."
+  },
+  "i-have-adhd__run-one-file__2__second-opinion": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply opens with the exact reference command, and its extra claims (tests ran, npm test runs all files) are plausible and don't contradict the reference."
+  },
+  "i-have-adhd__run-one-file__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 6,
+    "reason": "The reply gives the reference command `node --test tests/cart.test.ts`, and its extra claims are plausible and not contradicted by anything. It has a short lead-in sentence before the command."
+  },
+  "i-have-adhd__safe-twice__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply opens with 'No' and correctly explains that += makes repeated applyDiscount calls stack, matching the reference, and it makes no false claims."
+  },
+  "i-have-adhd__safe-twice__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply opens with 'No' and correctly says applyDiscount uses += so repeated calls stack, which matches the reference. The extra details are plausible and don't contradict it."
+  },
+  "i-have-adhd__safe-twice__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "Opens with 'No' and correctly explains that += stacks the discounts, matching the reference; the extra detail doesn't contradict it."
+  },
+  "i-have-adhd__where-defined__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence correctly states TAX_RATE = 0.21 is in src/money.ts, matching the reference, and the extra claims are not contradicted."
+  },
+  "i-have-adhd__where-defined__1__second-opinion": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states the tax rate is defined in src/money.ts as TAX_RATE = 0.21, matching the reference, and the extra details don't contradict it."
+  },
+  "i-have-adhd__where-defined__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states TAX_RATE is defined in src/money.ts as 0.21, matching the reference, and the extra bug details don't contradict it."
+  },
+  "i-have-adhd__where-defined__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states TAX_RATE = 0.21 in src/money.ts, matching the reference; the extra details are plausible and not contradicted."
+  },
+  "i-have-adhd__why-failing__1": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence states addTax doesn't round to cents, and the reply also gives 24.1879 versus the expected 24.19, matching the reference with no false claims."
+  },
+  "i-have-adhd__why-failing__2": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The reply identifies that addTax doesn't round to cents (24.1879 vs expected 24.19), matching the reference, with no false claims. The first sentence gives the fix, which directly answers the question."
+  },
+  "i-have-adhd__why-failing__3": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence says addTax doesn't round, and the reply gives 24.1879 against the expected 24.19, which matches the reference."
+  },
+  "i-have-adhd__why-failing__3__second-opinion": {
+    "correct": true,
+    "wordsBeforeAnswer": 0,
+    "reason": "The first sentence says addTax doesn't round, and the reply gives 24.1879 versus the expected 24.19, which matches the reference."
+  }
+}

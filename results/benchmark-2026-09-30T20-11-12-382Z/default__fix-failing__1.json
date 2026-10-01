@@ -1,0 +1,15 @@
+{
+  "setup": "default",
+  "promptId": "fix-failing",
+  "promptKind": "task",
+  "repetition": 1,
+  "model": "claude-opus-5-5",
+  "reply": "I fixed the failing test (`adds 21% tax, rounded to cents`), and all 4 tests now pass.\n\nThe bug was in the code, not the test. `addTax` in `src/money.ts:5` is supposed to round the result to cents, as its comment says, but it didn't round at all. So `addTax(19.99)` returned `24.1879` instead of `24.19`. It now rounds to the nearest cent: `Math.round(netAmount * (1 + TAX_RATE) * 100) / 100`.\n\nThis works for the tested amount, but rounding decimal numbers like this can still be off by a cent in rare cases right at a half cent (e.g. `x.xx5`). If exact cent amounts matter for billing, the safer long-term fix is to store amounts as whole cents instead.",
+  "outputTokens": 1568,
+  "costUsd": 0.16634799999999997,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 18076,
+  "turns": 9,
+  "isError": false,
+  "checkPassed": true
+}

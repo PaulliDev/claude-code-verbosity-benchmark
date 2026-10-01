@@ -1,0 +1,15 @@
+{
+  "setup": "claude-md",
+  "promptId": "run-one-file",
+  "promptKind": "lookup",
+  "repetition": 1,
+  "model": "claude-opus-5-5",
+  "reply": "Run `node --test tests/cart.test.ts`. Don't use `npm test -- tests/cart.test.ts`, because npm appends the file to the existing `tests/*.test.ts` pattern and every test still runs.",
+  "outputTokens": 455,
+  "costUsd": 0.11412000000000001,
+  "activationCostUsd": 0,
+  "durationMilliseconds": 6746,
+  "turns": 3,
+  "isError": false,
+  "checkPassed": null
+}

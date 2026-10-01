@@ -1,0 +1,82 @@
+[
+  {
+    "setup": "i-have-adhd",
+    "repetition": 1,
+    "turn": 1,
+    "prompt": "What does this project do?",
+    "reply": "It's a small TypeScript checkout module: a shopping cart that adds 21% tax to prices in euros. The README says it's a test bed for a benchmark.\n\n**What each file does:**\n1. `src/cart.ts`: a `Cart` that holds items (SKU, unit price, quantity), applies a percentage discount, and returns net and gross totals.\n2. `src/money.ts`: `addTax()` adds 21% tax, and `formatEuros()` formats an amount as `€5.00`.\n3. `src/rate-limiter.ts`: a sliding-window rate limiter keyed by string. Nothing else in the project uses it and it has no tests.\n4. `tests/`: 4 tests using Node's built-in test runner. `npm test` runs them with Node 22.18 or newer, with no dependencies to install.\n\n**Test status:** I ran `npm test`: 3 pass, 1 fails.\n- It fails at `tests/money.test.ts:6`: expected `24.19`, got `24.1879`.\n- Cause: the comment on `addTax` in `src/money.ts:3` says it rounds to cents, but the code doesn't round.\n- Fix: change line 5 to `return Math.round(netAmount * (1 + TAX_RATE) * 100) / 100;` (about 1 minute).\n\nNext: should I apply that one-line fix and rerun the tests?",
+    "costUsd": 0.2680062
+  },
+  {
+    "setup": "i-have-adhd",
+    "repetition": 1,
+    "turn": 2,
+    "prompt": "Why is the tax test failing?",
+    "reply": "`addTax` doesn't round, but the test expects a result rounded to cents.\n\n1. The test calls `addTax(19.99)` and expects `24.19` (`tests/money.test.ts:6`).\n2. The code returns `19.99 * 1.21 = 24.1879` (`src/money.ts:5`).\n3. The comment on line 3 of `src/money.ts` promises \"rounded to cents\", but the code never rounds. The test checks what the comment promises.\n\n**Fix:** replace `src/money.ts:5` with:\n```ts\nreturn Math.round(netAmount * (1 + TAX_RATE) * 100) / 100;\n```\n\nThat takes about 1 minute. After it, all 4 tests should pass.\n\nNext: say \"fix it\" and I'll apply the change and rerun `npm test`.",
+    "costUsd": 0.283274
+  },
+  {
+    "setup": "i-have-adhd",
+    "repetition": 1,
+    "turn": 3,
+    "prompt": "Fix it.",
+    "reply": "The tax test passes now, and all 4 tests pass (`npm test`: 4 pass, 0 fail).\n\nThe change is in `src/money.ts:5`: `addTax` now rounds to cents, so `addTax(19.99)` returns `24.19`.\n\nSeparately, `Cart.applyDiscount` adds each new discount to the previous ones. Calling it with `10` twice gives 20% off, and calling it enough times pushes the total below zero. That may be intended, but no test covers it.\n\nNext: say \"check discounts\" if you want me to look at that.",
+    "costUsd": 0.3147994
+  },
+  {
+    "setup": "i-have-adhd",
+    "repetition": 1,
+    "turn": 4,
+    "prompt": "Is it safe to call applyDiscount twice on the same cart?",
+    "reply": "It won't crash, but the result may not be what you expect. Each call adds its percentage to the previous ones, and nothing checks the total (`src/cart.ts:17-19`).\n\nOn a €100 cart:\n\n| Calls | Discount applied | Net total |\n|---|---|---|\n| `applyDiscount(10)` twice | 20% | €80 |\n| `applyDiscount(60)` twice | 120% | **−€20** |\n| `applyDiscount(-50)` once | −50% | **€150** |\n\nThese numbers are worked out by hand from the code. My test run was blocked by the permission prompt, so they're not run output.\n\n**Safe:** a couple of small discounts whose total stays between 0 and 100.\n\n**Not safe:**\n1. Discounts that add up to more than 100% make the total negative.\n2. A negative percentage raises the price instead of lowering it.\n3. A second 10% gives 20% off, not 19% (compounded) or 10% (replaced). Whether that's right depends on what the checkout should do.\n\nThe fix takes about 10 minutes plus a test, but you need to choose which behavior you want first.\n\nNext: pick one, and I'll implement it with a test:\n- **(a)** keep stacking, but cap the total at 0–100% and reject negative values\n- **(b)** the newest discount replaces the old one\n- **(c)** discounts compound (10% then 10% gives 19% off)",
+    "costUsd": 0.35013320000000003
+  },
+  {
+    "setup": "i-have-adhd",
+    "repetition": 1,
+    "turn": 5,
+    "prompt": "Make it safe to call more than once.",
+    "reply": "You can now call `applyDiscount` repeatedly on the same cart without breaking the total. `npm test` shows 7 pass, 0 fail.\n\nI went with option (a), which keeps the existing stacking behavior and adds limits:\n\n1. **Stacking stays:** calling `applyDiscount(10)` twice still gives 20% off.\n2. **Combined discount capped at 100%:** calling `applyDiscount(60)` twice gives €0, not −€20.\n3. **Bad input throws a `RangeError`:** that covers negative values, values over 100, and `NaN`/`Infinity`.\n\n**Changed files:**\n- `src/cart.ts:17-24` adds the check and the cap.\n- `tests/cart.test.ts` adds 3 tests: stacking, the cap, and rejected input.\n\n**Behavior change:** code that used to pass a negative percentage (for example to add a surcharge) now throws an error instead.\n\nNext: if a second discount should replace the first (b) or compound with it (c) instead, name the letter and I'll switch it. It takes about 5 minutes.",
+    "costUsd": 0.42608
+  },
+  {
+    "setup": "i-have-adhd",
+    "repetition": 1,
+    "turn": 6,
+    "prompt": "What does src/rate-limiter.ts do?",
+    "reply": "It limits how often each key (for example a user ID or IP address) can do something. A key gets at most `limit` successful calls in any rolling window of `windowMilliseconds`.\n\n**How it works (`src/rate-limiter.ts`):**\n1. `new RateLimiter(5, 60_000)` allows 5 calls per key per 60 seconds.\n2. `tryAcquire(\"user-1\")` returns `true` if the call is allowed and `false` if the key is over its limit.\n3. For each key, it stores the timestamps of recent allowed calls in a `Map` (line 4).\n4. On each call, it drops timestamps older than the window (lines 12–15). If `limit` timestamps remain, it returns `false`. Otherwise it records the current time and returns `true`.\n5. The optional `now` parameter lets you pass a fake time, which is useful in tests.\n\n**Details worth knowing:**\n- The window slides with each call. It isn't a fixed clock-minute bucket.\n- Rejected calls aren't recorded, so retrying doesn't extend the block.\n- Nothing in the project imports it, and it has no tests.\n\nSeparately, entries in the `Map` are never deleted. A key that calls once and never returns stays in memory forever, so with many unique keys (like IP addresses) memory keeps growing. Adding cleanup plus tests would take about 15 minutes.\n\nNext: say \"fix the leak\" if you want that done.",
+    "costUsd": 0.4468892
+  },
+  {
+    "setup": "i-have-adhd",
+    "repetition": 1,
+    "turn": 7,
+    "prompt": "Any bugs in it?",
+    "reply": "I found one real bug and two weaker issues. All of this comes from reading the code; I haven't run anything, because there are no tests for this file.\n\n**1. Memory leak (real bug)**\n- Where: `src/rate-limiter.ts:13-23`. Keys are added to the `Map` but never removed.\n- Effect: every unique key stays in memory forever, even after its timestamps expire. With keys like IP addresses, memory keeps growing until the process restarts.\n- Fix: delete the key once none of its timestamps are in the window, and clean up stale keys periodically. About 15 minutes with tests.\n\n**2. Invalid config silently turns off limiting**\n- Where: the constructor (lines 6–9) doesn't check its inputs.\n- Effect: `new RateLimiter(NaN, 1000)` allows every call, because `recent.length >= NaN` is always false. A `NaN` window has the same effect, because `timestamp > NaN` is always false, so the stored list is always empty. A limit of `0` blocks every call.\n- Fix: throw a `RangeError` unless `limit` is a positive integer and the window is a positive finite number. About 5 minutes.\n\n**3. System clock changes affect it**\n- Where: `Date.now()` on line 11.\n- Effect: `Date.now()` follows the system clock, which can jump (NTP sync or a manual change). If the clock jumps forward and then back, a key can stay blocked for as long as the jump lasted.\n- Fix: default to `performance.now()`, which never goes backward. About 2 minutes.\n\nThe logic itself is correct: the window boundary, counting, and handling of rejected calls all behave as intended.\n\nNext: say \"fix 1 and 2\" and I'll do both with tests (about 20 minutes).",
+    "costUsd": 0.47725039999999996
+  },
+  {
+    "setup": "i-have-adhd",
+    "repetition": 1,
+    "turn": 8,
+    "prompt": "Where is the tax rate defined?",
+    "reply": "The tax rate is defined in `src/money.ts:1`:\n\n```ts\nexport const TAX_RATE = 0.21;\n```\n\nThat's 21%, hardcoded. The only code that uses it is `addTax()` on line 5 of the same file, and `Cart.grossTotal()` reaches it by calling `addTax()`. No config file or environment variable overrides it.\n\nNext: to change the rate, edit line 1 and update the expected value in `tests/money.test.ts:6`.",
+    "costUsd": 0.49543239999999994
+  },
+  {
+    "setup": "i-have-adhd",
+    "repetition": 1,
+    "turn": 9,
+    "prompt": "Add a removeItem(sku) method to Cart.",
+    "reply": "`Cart.removeItem(sku)` is added and tested, and all 9 tests pass (`npm test`: 9 pass, 0 fail).\n\n**How it behaves:**\n1. It removes **every** line with that SKU. `addItem` doesn't merge duplicates, so the same SKU can appear on more than one line.\n2. It returns `true` if it removed something and `false` if no line had that SKU. It doesn't throw.\n3. Discounts stay on the cart after items are removed.\n\n**Changed files:**\n- `src/cart.ts:17-28` has the new method.\n- `tests/cart.test.ts` adds 2 tests: removing duplicate lines, and an unknown SKU.\n\nNext: if you want `removeItem` to lower the quantity instead of removing whole lines, say so. It takes about 10 minutes.",
+    "costUsd": 0.5647427999999999
+  },
+  {
+    "setup": "i-have-adhd",
+    "repetition": 1,
+    "turn": 10,
+    "prompt": "Do all the tests pass now?",
+    "reply": "Yes, all 9 tests pass: 9 pass, 0 fail. That's from the `npm test` run right after I added `removeItem`, and no files have changed since.\n\nWhat they cover:\n- **Cart (7 tests):** totals, `removeItem`, and discounts (stacking, the 100% cap, rejected input).\n- **Money (2 tests):** tax rounding and euro formatting.\n\n`src/rate-limiter.ts` still has no tests, so the memory leak and config bugs I found earlier aren't covered.\n\nNext: say \"fix 1 and 2\" to fix those two rate limiter bugs with tests (about 20 minutes).",
+    "costUsd": 0.5810101999999999
+  }
+]

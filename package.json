@@ -1,0 +1,19 @@
+{
+  "name": "claude-code-verbosity-benchmark",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "bench": "node scripts/run-benchmark.ts",
+    "typecheck": "tsc -p .",
+    "conversation": "node scripts/run-conversation.ts",
+    "score": "node scripts/score.ts",
+    "test": "node --test \"tests/*.test.ts\""
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.3",
+    "typescript": "^7.0.2"
+  }
+}
